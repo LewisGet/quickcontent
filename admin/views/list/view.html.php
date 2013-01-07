@@ -77,7 +77,7 @@ class QuickcontentViewList extends AKViewItem
 	 */
 	protected function addToolbar()
 	{
-		AKToolBarHelper::title( 'List' . ' ' . JText::_('COM_QUICKCONTENT_TITLE_ITEM_EDIT'), 'article-add.png');
+		AKToolBarHelper::title( JText::_('COM_QUICKCONTENT_TITLE_ITEM_EDIT'), 'article-add.png');
 		
 		parent::addToolbar();
 	}

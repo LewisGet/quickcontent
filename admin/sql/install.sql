@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `#__quickcontent_lists` (
   `list` text NOT NULL,
   `blog` text NOT NULL,
   `article` text NOT NULL,
+  `restore` text NOT NULL,
   `alias` varchar(255) NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(11) NOT NULL,
