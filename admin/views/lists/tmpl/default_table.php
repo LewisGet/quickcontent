@@ -304,15 +304,19 @@ if( JVERSION >= 3 ) {
 
 				<td class="center">
 					<span >
-						<a style="width:32px;height:32px;text-indent:-5000px;;display:inline-block;background:url(templates/bluestork/images/toolbar/icon-32-new.png);" 
-						href="index.php?option=com_quickcontent&task=generator.generate&id=<?php echo $item->a_id ?>">GO!</a>
+						<a style="<?php echo JVERSION < 3 ? 'width:32px;height:32px;text-indent:-5000px;display:inline-block;background:url(templates/bluestork/images/toolbar/icon-32-new.png);' : '' ; ?>" 
+						href="index.php?option=com_quickcontent&task=generator.generate&id=<?php echo $item->a_id ?>"
+						class="btn btn-primary">
+						<i class="icon-new icon-white"></i></a>
 					</span>
 				</td>
 				
 				<td class="center">
 					<span >
-						<a style="width:32px;height:32px;text-indent:-5000px;;display:inline-block;background:url(templates/bluestork/images/toolbar/icon-32-refresh.png);" 
-						href="index.php?option=com_quickcontent&task=generator.restore&id=<?php echo $item->a_id ?>">Restore!</a>
+						<a style="<?php echo JVERSION < 3 ? 'width:32px;height:32px;text-indent:-5000px;display:inline-block;background:url(templates/bluestork/images/toolbar/icon-32-refresh.png);' : '' ; ?>" 
+						href="index.php?option=com_quickcontent&task=generator.restore&id=<?php echo $item->a_id ?>"
+						class="btn btn-danger">
+						<i class="icon-refresh iconwhite"></i></a>
 					</span>
 				</td>
 			

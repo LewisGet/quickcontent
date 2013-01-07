@@ -111,26 +111,37 @@ class QuickcontentViewList extends AKViewItem
 	
 	public function showParams( $id ) {
 		$fieldSets = $this->formParams->$id->getFieldsets( $id );
+		$keys = array_keys($fieldSets);
 		
-		echo JHtml::_('sliders.start','menu-sliders-'.$id); 
+		echo QuickcontentHelper::_('panel.startSlider','menu-sliders-'.$id, array( 'active' => $id.'-'.$keys[0].'-options' )); 
 		
 		foreach ($fieldSets as $name => $fieldSet) :
 			$label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_MENUS_'.$name.'_FIELDSET_LABEL';
-			echo JHtml::_('sliders.panel',JText::_($label), $name.'-options');
+			echo QuickcontentHelper::_('panel.addSlide', 'menu-sliders-'.$id, JText::_($label), $id.'-'.$name.'-options');
 				if (isset($fieldSet->description) && trim($fieldSet->description)) :
 					echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
 				endif;
 				?>
 			<div class="clr"></div>
 			<fieldset class="panelform">
-				<ul class="adminformlist">
-					<?php foreach ($this->formParams->$id->getFieldset($name) as $field) : ?>
-						<li><?php echo $field->label; ?>
-						<?php echo $field->input; ?></li>
-					<?php endforeach; ?>
-				</ul>
+
+				<?php foreach ($this->formParams->$id->getFieldset($name) as $field) : ?>
+					<div class="control-group">
+						<span class="control-label">
+							<?php echo $field->label; ?>
+						</span>
+						<div class="controls">
+							<?php echo $field->input; ?>
+						</div>
+					</div>
+				<?php endforeach; ?>
+
 			</fieldset>
-		<?php endforeach;
-	 echo JHtml::_('sliders.end'); 
+			
+		<?php
+			echo QuickcontentHelper::_('panel.endSlide');
+		endforeach;
+		
+	 echo QuickcontentHelper::_('panel.endSlider'); 
 	}
 }

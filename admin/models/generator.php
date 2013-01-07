@@ -397,7 +397,7 @@ FULL;
 		$db->setQuery($q);
 		$cids = $db->loadColumn();
 		
-		$content = JTable::getInstance( 'Menutype' );
+		$content = JTable::getInstance( 'MenuType' );
 		
 		foreach( $cids as $cid ) {
 			$content->load( $cid );

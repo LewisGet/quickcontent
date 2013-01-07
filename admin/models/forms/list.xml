@@ -65,6 +65,7 @@
 				default="mainmenu"
 				class="inputbox"
 				description="將選單產生在此選單群組，若無此選單類型將新增一個。"
+				labelclass="control-label"
 			/>
 			
 			<field 
@@ -72,8 +73,9 @@
 				type="radio"
 				label="清空該選單"
 				default="1"
-				class="inputbox"
+				class="inputbox btn-group"
 				description="新增前將此選單原有項目清空，預設選單將不會被刪除。"
+				labelclass="control-label"
 			>
 				<option value="1">JYES</option>
 				<option value="0">JNO</option>
@@ -86,6 +88,7 @@
 				default="list"
 				class="inputbox"
 				description="產生的選單以那一種類型展示。"
+				labelclass="control-label"
 			>
 				<option value="list">清單</option>
 				<option value="blog">部落格</option>
