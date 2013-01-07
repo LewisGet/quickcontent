@@ -1,4 +1,4 @@
-REATE TABLE IF NOT EXISTS `j25_quickcontent_lists` (
+CREATE TABLE IF NOT EXISTS `#__quickcontent_lists` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `asset_id` int(11) NOT NULL,
   `catid` int(11) NOT NULL,
