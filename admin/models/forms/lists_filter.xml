@@ -19,17 +19,6 @@
 			<option value="*">JALL</option>
 		</field>
 		
-		<field
-			name="a.catid"
-			type="category"
-			default=""
-			extension="com_quickcontent"
-			onchange="this.form.submit();"
-			class="" 
-		>
-			<option></option>
-			<option>JOPTION_SELECT_CATEGORY</option>
-		</field>
 		
 	</fieldset>
 	

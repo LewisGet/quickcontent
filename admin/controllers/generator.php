@@ -44,4 +44,15 @@ class QuickcontentControllerGenerator extends JControllerAdmin
 		
 		$this->setRedirect( 'index.php?option=com_quickcontent' );
 	}
+	
+	public function restore(){
+		
+		$model = $this->getModel(  );
+		$model->restore();
+		
+		$msg = '已還原' ;
+		
+		$this->setRedirect( 'index.php?option=com_quickcontent' , $msg );
+		
+	}
 }

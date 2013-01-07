@@ -27,48 +27,6 @@ class QuickcontentHelper extends AKProxy
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 		
-		if(JVERSION >= 3):
-		
-			JHtmlSidebar::addEntry(
-				JText::_('JCATEGORY'),
-				'index.php?option=com_categories&extension=com_quickcontent',
-				$vName == 'categories'
-			);
-			
-			$folders = JFolder::folders(JPATH_ADMINISTRATOR.'/components/com_quickcontent/views');
-			
-			foreach( $folders as $folder ){
-				if( substr($folder, -2) == 'is' || substr($folder, -1) == 's'){
-					JHtmlSidebar::addEntry(
-						ucfirst($folder) . ' ' . JText::_('COM_QUICKCONTENT_TITLE_LIST'),
-						'index.php?option=com_quickcontent&view='.$folder,
-						$vName == $folder
-					);
-				}
-			}
-		
-		else:
-			
-			JSubMenuHelper::addEntry(
-				JText::_('JCATEGORY'),
-				'index.php?option=com_categories&extension=com_quickcontent',
-				$vName == 'categories'
-			);
-			
-			$folders = JFolder::folders(JPATH_ADMINISTRATOR.'/components/com_quickcontent/views');
-			
-			foreach( $folders as $folder ){
-				if( substr($folder, -2) == 'is' || substr($folder, -1) == 's'){
-					JSubMenuHelper::addEntry(
-						ucfirst($folder) . ' ' . JText::_('COM_QUICKCONTENT_TITLE_LIST'),
-						'index.php?option=com_quickcontent&view='.$folder,
-						$vName == $folder
-					);
-				}
-			}
-			
-		endif;
-		
 	}
 	
 	

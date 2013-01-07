@@ -62,7 +62,7 @@ if( JVERSION >= 3 ) {
 				<input type="checkbox" name="checkall-toggle" value="" onclick="Joomla.checkAll(this)" />
 			</th>
 			
-			<th>
+			<th width="15%">
 				<?php echo JHtml::_('grid.sort',  'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 			</th>
 			
@@ -76,11 +76,14 @@ if( JVERSION >= 3 ) {
 			<?php echo JHtml::_('grid.sort',  '清空選單', 'a.delete_existing', $listDirn, $listOrder); ?>
 			</th>
 			<th class='left'>
-			<?php echo JHtml::_('grid.sort',  'COM_QUICKCONTENT_LIST_CONTENT', 'a.content', $listDirn, $listOrder); ?>
+			<?php echo JHtml::_('grid.sort',  '內容', 'a.content', $listDirn, $listOrder); ?>
 			</th>
 			
 			<th>
 			產生選單
+			</th>
+			<th>
+			移除上次產生的項目
 			</th>
 			
 			<th width="5%" class="nowrap">
@@ -299,10 +302,17 @@ if( JVERSION >= 3 ) {
 				</td>
 				
 
-				<td>
+				<td class="center">
 					<span >
-						<a style="width:32px;height:32px;text-indent:-5000px;;display:block;background:url(templates/bluestork/images/toolbar/icon-32-new.png);" 
+						<a style="width:32px;height:32px;text-indent:-5000px;;display:inline-block;background:url(templates/bluestork/images/toolbar/icon-32-new.png);" 
 						href="index.php?option=com_quickcontent&task=generator.generate&id=<?php echo $item->a_id ?>">GO!</a>
+					</span>
+				</td>
+				
+				<td class="center">
+					<span >
+						<a style="width:32px;height:32px;text-indent:-5000px;;display:inline-block;background:url(templates/bluestork/images/toolbar/icon-32-refresh.png);" 
+						href="index.php?option=com_quickcontent&task=generator.restore&id=<?php echo $item->a_id ?>">Restore!</a>
 					</span>
 				</td>
 			

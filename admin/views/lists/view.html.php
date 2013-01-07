@@ -65,9 +65,15 @@ class QuickcontentViewLists extends AKViewList
 	protected function addToolbar()
 	{
 		// Set title.
-		AKToolBarHelper::title( ucfirst($this->getName()) . ' ' . JText::_($this->text_prefix.'_TITLE_LIST'), 'article.png');
+		AKToolBarHelper::title( JText::_($this->text_prefix.'_TITLE_LIST'), 'article.png');
 		
 		parent::addToolbar();
+		
+		$msg = '這將會清除所有文章、分類與選單（除了預設首頁選單外），你是否要繼續？' ;
+		//JToolBarHelper::deleteList( $msg , 'generator.deleteAll',  '清除全站資料' , false );
+		
+		$bar = JToolBar::getInstance('toolbar');
+		$bar->appendButton('Confirm', $msg, 'delete', '清除全站資料', 'generator.deleteAll', false);
 	}
 	
 	

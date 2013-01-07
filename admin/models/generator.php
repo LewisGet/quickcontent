@@ -16,6 +16,8 @@ jimport('joomla.application.component.modellist');
  */
 class QuickcontentModelGenerator extends JModelList
 {
+	
+	public $restore = array() ;
 
     /**
      * Constructor.
@@ -42,6 +44,11 @@ class QuickcontentModelGenerator extends JModelList
 		$this->menuTable 		= JTable::getInstance( 'menu' );
 		$this->params 			= JComponentHelper::getParams('com_quickcontent');
 		
+		$this->restore['categories'] = array();
+		$this->restore['articles'] = array();
+		$this->restore['menus'] = array();
+		$this->restore['menutype'] = array();
+		
 		//$this->es = AK::getEasySet();
 		
         parent::__construct($config);
@@ -59,6 +66,12 @@ class QuickcontentModelGenerator extends JModelList
 		$dom = simplexml_load_string( '<root>'.$content->content.'</root>');
 		
 		$this->getCategories( $dom );
+		
+		
+		// Save Restore
+		$content->restore = json_encode($this->restore);
+		$db = JFactory::getDbo();
+		$db->updateObject('#__quickcontent_lists', $content, 'id');
 	}
 	
 	public function getCategories( $cats = null , $parent_id = null , $level = 1 ){
@@ -82,6 +95,8 @@ class QuickcontentModelGenerator extends JModelList
 					//echo 'category:'.$li.$parent_id['cat'].'<br />' ;
 					$id = $this->createCategory( $li , $parent_id ) ;
 					
+					echo 'Create Category';
+					
 					$this->getCategories( $li , $id ) ;
 				}
 
@@ -95,7 +110,10 @@ class QuickcontentModelGenerator extends JModelList
 		$title = (string)$cat ;
 		$title = trim( $title ) ;
 		
+		
+		
 		// set Category
+		// ============================================================
 		$t = $this->categoryTable ;
 		$t->reset();
 		
@@ -136,7 +154,13 @@ class QuickcontentModelGenerator extends JModelList
 		
 		$pid['cat'] = $t->id;
 		
+		// Set Restore
+		$this->restore['categories'][] = $t->id ;
+		
+		
+		
 		// set Menu
+		// ============================================================
 		$layout = $this->content->category_menutype ;
 		switch( $layout ){
 			case 'list' :
@@ -181,6 +205,10 @@ class QuickcontentModelGenerator extends JModelList
 		$m->store();
 		
 		$pid['menu'] = $m->id;
+		
+		// Set Restore
+		$this->restore['menus'][] = $m->id ;
+		
 		$m->reset();
 		$m->id = null ;
 		
@@ -216,6 +244,8 @@ class QuickcontentModelGenerator extends JModelList
 			$this->deleteMenus( $menutype ) ;
 		}
 		
+		// Set Restore
+		$this->restore['menutype'][] = $menutype ;
 	}
 	
 	public function createArticle($title,$pid){
@@ -293,6 +323,10 @@ FULL;
 		$t->store();
 		$this->app->triggerEvent( 'onContentAfterSave' , array( 'com_content.article', &$t, true ) ) ;
 		
+		// Set Restore
+		$this->restore['articles'][] = $t->id ;
+		
+		
 		// set Menu
 		$link  = "index.php?option=com_content&view=article&id={$t->id}" ;
 		
@@ -315,6 +349,9 @@ FULL;
 		
 		$m->check();
 		$m->store();
+		
+		// Set Restore
+		$this->restore['menus'][] = $t->id ;
 		
 		$m->reset();
 		$m->id = null ;
@@ -360,7 +397,7 @@ FULL;
 		$db->setQuery($q);
 		$cids = $db->loadColumn();
 		
-		$content = JTable::getInstance( 'menutype' );
+		$content = JTable::getInstance( 'Menutype' );
 		
 		foreach( $cids as $cid ) {
 			$content->load( $cid );
@@ -372,15 +409,15 @@ FULL;
 	
 	public function deleteMenus( $menutype = null ){
 	
-		if( $menutype ){
-			$where = " menutype='{$menutype}' " ;
-		} else{
-			$where = " menutype != 'menu' AND menutype != 'main' AND level != 0 " ;
-		}
-	
 		// Delete Menus
 		$db = JFactory::getDbo();
 		$q = $db->getQuery(true) ;
+		
+		if( $menutype ){
+			$q->where(" menutype='{$menutype}' ") ;
+		} else{
+			$q->where(" menutype != 'menu' AND menutype != 'main' AND level != 0 ") ;
+		}
 		
 		$q->select("id")
 			->from("#__menu")
@@ -389,7 +426,7 @@ FULL;
 		$db->setQuery($q);
 		$cids = $db->loadColumn();
 		
-		$content = JTable::getInstance( 'menu' );
+		$content = JTable::getInstance( 'Menu' );
 		$default_menu = array();
 		
 		foreach( $cids as $cid ) {
@@ -419,7 +456,7 @@ FULL;
 		$db->setQuery($q);
 		$cids = $db->loadColumn();
 		
-		$content = JTable::getInstance( 'category' );
+		$content = JTable::getInstance( 'Category' );
 		
 		foreach( $cids as $cid ) {
 			$content->load( $cid );
@@ -440,13 +477,50 @@ FULL;
 		$db->setQuery($q);
 		$cids = $db->loadColumn();
 		
-		$content = JTable::getInstance( 'content' );
+		$content = JTable::getInstance( 'Content' );
 		
 		foreach( $cids as $cid ) {
 			$content->load( $cid );
 			$content->delete() ;
 		}
 	}
+	
+	
+	/*
+	 * function restore
+	 * @param 
+	 */
+	
+	public function restore()
+	{
+		$content = $this->getContent( JRequest::getVar('id') ) ;
+		$this->content = $content ;
+		$restore = json_decode( $this->content->restore );
+		
+		
+		// Delete Articles
+		$t = JTable::getInstance('Content');
+		foreach( $restore->articles as $id ):
+			$t->delete($id) ;
+		endforeach;
+		
+		// Delete Categories
+		$t = JTable::getInstance('Category');
+		foreach( $restore->categories as $id ):
+			$t->load($id);
+			$t->delete($id) ;
+		endforeach;
+
+		// Delete Menu
+		$t = JTable::getInstance('Menu');
+		foreach( $restore->menus as $id ):
+			$t->delete($id) ;
+		endforeach;
+		
+		// Delete MenuType
+		$this->deleteMenuTypes($restore->menutype[0]);
+	}
+	
 	/*
 	* turn 
 	* 	<li>Something<li>
