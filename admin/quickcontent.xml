@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5.0" method="upgrade">
 	<name>com_quickcontent</name>
-	<creationDate>2012-11-12</creationDate>
+	<creationDate>2013-1-8</creationDate>
 	<copyright>Copyright (C) 2012. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Asika</author>
 	<authorEmail>asika32764@gmail.com</authorEmail>
 	<authorUrl>http://asikart.com</authorUrl>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<description>COM_QUICKCONTENT_XML_DESCRIPTION</description>
 	
 	
 	<scriptfile>install.php</scriptfile>
 	
-	<!-- do not re install sql when generator working.-->
 	<install>
     	<sql>
         	<file driver="mysql" charset="utf8">sql/install.sql</file>
