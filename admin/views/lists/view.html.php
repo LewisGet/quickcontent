@@ -130,13 +130,11 @@ class QuickcontentViewLists extends AKViewList
 		
 		$this->sort_fields = array(
 			$ordering_key 		=> JText::_('JGRID_HEADING_ORDERING'),
-			'a.published' 		=> JText::_('JPUBLISHED'),
 			'a.title' 			=> JText::_('JGLOBAL_TITLE'),
-			'b.title' 			=> JText::_('JCATEGORY'),
-			'd.title' 			=> JText::_('JGRID_HEADING_ACCESS'),
-			'a.created_by' 		=> JText::_('JAUTHOR'),
-			'e.title' 			=> JText::_('JGRID_HEADING_LANGUAGE'),
-			'a.created' 		=> JText::_('JDATE'),
+			'a.menutype' 		=> JText::_('COM_QUICKCONTENT_MENUTYPE'),
+			'a.category_menutype' 	=> JText::_('COM_QUICKCONTENT_VIEWTYPE'),
+			'e.delete_existing' 	=> JText::_('COM_QUICKCONTENT_CLEARMENU'),
+			'a.content' 		=> JText::_('COM_QUICKCONTENT_LIST_CONTENT'),
 			'a.id' 				=> JText::_('JGRID_HEADING_ID')
 		);
 		

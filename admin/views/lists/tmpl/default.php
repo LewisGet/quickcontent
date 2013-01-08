@@ -56,7 +56,7 @@ if( JVERSION >= 3 ) {
 	
 }
 
-
+$this->sidebar = null ;
 
 ?>
 

@@ -225,15 +225,15 @@ if( JVERSION >= 3 ) {
 
 				<td class="center">
 					<?php $generated = $item->a_generated; ?>
+					<?php $disabled_bg = $generated ? 'background-position: 0 32px;' : ''; ?>
 					<span >
-						<a style="<?php echo JVERSION < 3 ? 'width:32px;height:32px;text-indent:-5000px;display:inline-block;background:url(templates/bluestork/images/toolbar/icon-32-new.png);' : '' ; ?>
-							<?php echo $generated ? 'background-position: 0 32px;' : ''; ?>"
+						<a style="<?php echo JVERSION < 3 ? 'width:32px;height:32px;text-indent:-5000px;display:inline-block;background:url(templates/bluestork/images/toolbar/icon-32-new.png);'.$disabled_bg : '' ; ?>"
 							<?php if( $generated ): ?>
 							href="javascript:void(0);"
 							<?php else: ?>
 							href="index.php?option=com_quickcontent&task=generator.generate&id=<?php echo $item->a_id ?>"
 							<?php endif; ?>
-							class="btn btn-primary">
+							class="btn btn-primary <?php echo (JVERSION >= 3 && $generated) ? 'disabled' : ''; ?>">
 							<i class="icon-new icon-white"></i>
 						</a>
 					</span>
