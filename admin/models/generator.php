@@ -349,7 +349,7 @@ class QuickcontentModelGenerator extends AKModelList
 		$m->store();
 		
 		// Set Restore
-		$this->restore['menus'][] = $t->id ;
+		$this->restore['menus'][] = $m->id ;
 		
 		$m->reset();
 		$m->id = null ;
