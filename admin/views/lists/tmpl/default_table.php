@@ -67,28 +67,28 @@ if( JVERSION >= 3 ) {
 			</th>
 			
 			<th width="7%" class='left' class="nowrap">
-			<?php echo JHtml::_('grid.sort',  '選單類型', 'a.menutype', $listDirn, $listOrder); ?>
+			<?php echo JHtml::_('grid.sort',  'COM_QUICKCONTENT_MENUTYPE', 'a.menutype', $listDirn, $listOrder); ?>
 			</th>
 			<th width="7%" class='left' class="nowrap">
-			<?php echo JHtml::_('grid.sort',  '顯示形式', 'a.category_menutype', $listDirn, $listOrder); ?>
+			<?php echo JHtml::_('grid.sort',  'COM_QUICKCONTENT_VIEWTYPE', 'a.category_menutype', $listDirn, $listOrder); ?>
 			</th>
 			<th width="7%" class='left' class="nowrap">
-			<?php echo JHtml::_('grid.sort',  '清空選單', 'a.delete_existing', $listDirn, $listOrder); ?>
+			<?php echo JHtml::_('grid.sort',  'COM_QUICKCONTENT_CLEARMENU', 'a.delete_existing', $listDirn, $listOrder); ?>
 			</th>
 			<th class='left'>
-			<?php echo JHtml::_('grid.sort',  '內容', 'a.content', $listDirn, $listOrder); ?>
+			<?php echo JHtml::_('grid.sort',  'COM_QUICKCONTENT_LIST_CONTENT', 'a.content', $listDirn, $listOrder); ?>
 			</th>
 			
 			<th>
-			產生選單
+				<?php echo JText::_('COM_QUICKCONTENT_GENERATE_NOW'); ?>
 			</th>
 			<th>
-			移除上次產生的項目
+				<?php echo JText::_('COM_QUICKCONTENT_RESTORE'); ?>
 			</th>
 			
-			<th width="5%" class="nowrap">
+			<!--<th width="5%" class="nowrap">
 				<?php echo JHtml::_('grid.sort',  'JPUBLISHED', 'a.published', $listDirn, $listOrder); ?>
-			</th>
+			</th>-->
 			
 			<?php if( JVERSION < 3 ): ?>
 			<th width="10%">
@@ -133,45 +133,6 @@ if( JVERSION >= 3 ) {
 		$canCheckin	= $user->authorise('core.manage',		'com_quickcontent.list.'.$item->a_id) || $item->a_checked_out == $userId || $item->a_checked_out == 0;
 		$canChange	= $user->authorise('core.edit.state',	'com_quickcontent.list.'.$item->a_id) && $canCheckin;
 		$canEditOwn = $user->authorise('core.edit.own',		'com_quickcontent.list.'.$item->a_id) && $item->c_id == $userId;
-		
-		// Nested ordering
-		if($nested){
-			
-			if($item->a_id == 1) {
-				$item->a_title = JText::_('JGLOBAL_ROOT') ;
-				$canEdit 	= false ;
-				$canChange 	= false ;
-				$canEditOwn = false ;
-			}
-			
-			$orderkey = array_search($item->a_id, $this->ordering[$item->a_parent_id]);
-		
-			// Get the parents of item for sorting
-			if ($item->a_level > 1)
-			{
-				$parentsStr = "";
-				$_currentParentId = $item->a_parent_id;
-				$parentsStr = " ".$_currentParentId;
-				for ($n = 0; $n < $item->a_level; $n++)
-				{
-					foreach ($this->ordering as $k => $v)
-					{
-						$v = implode("-", $v);
-						$v = "-".$v."-";
-						if (strpos($v, "-" . $_currentParentId . "-") !== false)
-						{
-							$parentsStr .= " ".$k;
-							$_currentParentId = $k;
-							break;
-						}
-					}
-				}
-			}
-			else
-			{
-				$parentsStr = "";
-			}
-		}
 
 		?>
 		<tr class="row<?php echo $i % 2; ?>"
@@ -235,46 +196,6 @@ if( JVERSION >= 3 ) {
 					<?php echo $item->get('a_title'); ?>
 				<?php endif; ?>
 				
-				
-				
-				<?php if( JVERSION >= 3 ): ?>
-				<!-- Title Edit Button -->
-				<div class="pull-left">
-					<?php
-						// Create dropdown items
-						if($canEdit || $canEditOwn){
-							JHtml::_('dropdown.edit', $item->a_id, 'list.');
-							JHtml::_('dropdown.divider');
-						}
-						
-						
-						if($canChange || $canEditOwn) {
-							if ($item->a_published) :
-							JHtml::_('dropdown.unpublish', 'cb' . $i, 'lists.');
-							else :
-								JHtml::_('dropdown.publish', 'cb' . $i, 'lists.');
-							endif;
-							JHtml::_('dropdown.divider');
-						}
-						
-						
-						if ($item->a_checked_out && $canCheckin) :
-							JHtml::_('dropdown.checkin', 'cb' . $i, 'lists.');
-						endif;
-						
-						if($canChange || $canEditOwn) {
-							if ($trashed) :
-								JHtml::_('dropdown.untrash', 'cb' . $i, 'lists.');
-							else :
-								JHtml::_('dropdown.trash', 'cb' . $i, 'lists.');
-							endif;
-						}
-						
-						// Render dropdown list
-						echo JHtml::_('dropdown.render');
-						?>
-				</div>
-				<?php endif; ?>
 			</td>
 			
 			<td>
@@ -283,18 +204,18 @@ if( JVERSION >= 3 ) {
 				<td>
 					<?php 
 					switch($item->category_menutype ){
-						case 'list' : echo '清單' ;		break;
-						case 'blog' : echo '部落格' ;		break;
-						default 	: echo '無' ;		break;
+						case 'list' : echo JText::_('COM_QUICKCONTENT_VIEW_LIST') ;		break;
+						case 'blog' : echo JText::_('COM_QUICKCONTENT_VIEW_BLOG') ;		break;
+						default 	: echo JText::_('COM_QUICKCONTENT_VIEW_NONE') ;		break;
 					}
 					?>
 				</td>
 				<td>
 					<?php 
 						if($item->delete_existing)
-							echo '是' ;
+							echo JText::_('JYES') ;
 						else
-							echo '否'; 
+							echo JText::_('JNO'); 
 					?>
 				</td>
 				<td>
@@ -303,11 +224,18 @@ if( JVERSION >= 3 ) {
 				
 
 				<td class="center">
+					<?php $generated = $item->a_generated; ?>
 					<span >
-						<a style="<?php echo JVERSION < 3 ? 'width:32px;height:32px;text-indent:-5000px;display:inline-block;background:url(templates/bluestork/images/toolbar/icon-32-new.png);' : '' ; ?>" 
-						href="index.php?option=com_quickcontent&task=generator.generate&id=<?php echo $item->a_id ?>"
-						class="btn btn-primary">
-						<i class="icon-new icon-white"></i></a>
+						<a style="<?php echo JVERSION < 3 ? 'width:32px;height:32px;text-indent:-5000px;display:inline-block;background:url(templates/bluestork/images/toolbar/icon-32-new.png);' : '' ; ?>
+							<?php echo $generated ? 'background-position: 0 32px;' : ''; ?>"
+							<?php if( $generated ): ?>
+							href="javascript:void(0);"
+							<?php else: ?>
+							href="index.php?option=com_quickcontent&task=generator.generate&id=<?php echo $item->a_id ?>"
+							<?php endif; ?>
+							class="btn btn-primary">
+							<i class="icon-new icon-white"></i>
+						</a>
 					</span>
 				</td>
 				
@@ -320,9 +248,9 @@ if( JVERSION >= 3 ) {
 					</span>
 				</td>
 			
-			<td class="center">
+			<!--<td class="center">
 				<?php echo JHtml::_('jgrid.published', $item->a_published, $i, 'lists.', $canChange, 'cb', $item->a_publish_up, $item->a_publish_down); ?>
-			</td>
+			</td>-->
 			
 			<?php if( JVERSION < 3 ): ?>
 			<td class="order">

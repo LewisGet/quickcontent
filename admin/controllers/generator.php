@@ -32,7 +32,7 @@ class QuickcontentControllerGenerator extends JControllerAdmin
 		$model = $this->getModel(  );
 		$model->saveContent();
 		
-		$msg = '內容產生完畢' ;
+		$msg = JText::_('COM_QUICKCONTENT_GENERATE_SUCCESS') ;
 		
 		$this->setRedirect( 'index.php?option=com_quickcontent' , $msg );
 		
@@ -42,7 +42,9 @@ class QuickcontentControllerGenerator extends JControllerAdmin
 		$model = $this->getModel(  );
 		$model->deleteAll();
 		
-		$this->setRedirect( 'index.php?option=com_quickcontent' );
+		$msg = JText::_('COM_QUICKCONTENT_CLEAR_WHOLE_SITE_SUCCESS') ;
+		
+		$this->setRedirect( 'index.php?option=com_quickcontent' , $msg );
 	}
 	
 	public function restore(){
@@ -50,7 +52,7 @@ class QuickcontentControllerGenerator extends JControllerAdmin
 		$model = $this->getModel(  );
 		$model->restore();
 		
-		$msg = '已還原' ;
+		$msg = JText::_('COM_QUICKCONTENT_RESTORE_SUCCESS') ;
 		
 		$this->setRedirect( 'index.php?option=com_quickcontent' , $msg );
 		

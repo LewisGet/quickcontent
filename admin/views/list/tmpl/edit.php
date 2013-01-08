@@ -15,10 +15,8 @@ JHtml::_('behavior.formvalidation');
 
 if( JVERSION >= 3){
 	JHtml::_('formbehavior.chosen', 'select');
-
 }else{
-	//FlowerHelper::_('include.bluestork');
-	// FlowerHelper::_('include.fixBootstrapToJoomla');
+	
 }
 
 ?>
@@ -53,12 +51,12 @@ if( JVERSION >= 3){
 				</div>
 			</div>
 			
-			<div class="control-group">
+			<!--<div class="control-group">
 				<?php echo $this->form->getLabel('published', 'basic'); ?>
 				<div class="controls">
 					<?php echo $this->form->getInput('published', 'basic'); ?>
 				</div>
-			</div>
+			</div>-->
 			
 			<div class="control-group">
 				<?php echo $this->form->getLabel('checked_out', 'basic'); ?>
@@ -76,8 +74,8 @@ if( JVERSION >= 3){
 			
 		</fieldset>
 		<fieldset class="adminform">
-			<div><?php echo $this->form->getLabel('content'); ?></div>
-			<div><?php echo $this->editor; ?></div>
+			<div><?php echo $this->form->getLabel('content', 'basic'); ?></div>
+			<div><?php echo $this->form->getInput('content', 'basic'); ?></div>
 			
 		</fieldset>
 	</div>
@@ -93,19 +91,19 @@ if( JVERSION >= 3){
 	<ul class="nav nav-tabs">
 
 		<li class="active">
-			<a href="#basic" data-toggle="tab"><?php echo JText::_('基本設置'); ?></a>
+			<a href="#basic" data-toggle="tab"><?php echo JText::_('COM_QUICKCONTENT_FORM_OPTION_BASIC'); ?></a>
 		</li>
 		
 		<li class="">
-			<a href="#category-list" data-toggle="tab"><?php echo JText::_('分類清單'); ?></a>
+			<a href="#category-list" data-toggle="tab"><?php echo JText::_('COM_QUICKCONTENT_FORM_OPTION_LIST'); ?></a>
 		</li>
 		
 		<li class="">
-			<a href="#category-blog" data-toggle="tab"><?php echo JText::_('分類部落格'); ?></a>
+			<a href="#category-blog" data-toggle="tab"><?php echo JText::_('COM_QUICKCONTENT_FORM_OPTION_BLOG'); ?></a>
 		</li>
 		
 		<li class="">
-			<a href="#article" data-toggle="tab"><?php echo JText::_('文章設定'); ?></a>
+			<a href="#article" data-toggle="tab"><?php echo JText::_('COM_QUICKCONTENT_FORM_OPTION_ARTICLE'); ?></a>
 		</li>
 
 	</ul>
@@ -115,11 +113,11 @@ if( JVERSION >= 3){
 	
 	<?php echo QuickcontentHelper::_( 'panel.startTabs' , 'quickcontent', array( 'active' => 'basic' )  ); ?>
 	
-	<?php echo QuickcontentHelper::_( 'panel.addPanel' , 'quickcontent', '基本設置' , 'basic' ); ?>
+	<?php echo QuickcontentHelper::_( 'panel.addPanel' , 'quickcontent', JText::_('COM_QUICKCONTENT_FORM_OPTION_BASIC') , 'basic' ); ?>
 	
 	
 		<?php echo QuickcontentHelper::_('panel.startSlider','basic-slides', array('active' => 'basic-basic-options')); ?>
-		<?php echo QuickcontentHelper::_('panel.addSlide', 'basic-slides', '基本' , 'basic-basic-options'); ?>
+		<?php echo QuickcontentHelper::_('panel.addSlide', 'basic-slides', JText::_('COM_QUICKCONTENT_FORM_OPTION_BASIC') , 'basic-basic-options'); ?>
 		<fieldset class="panelform">
 			<div class="control-group">
 				<?php echo $this->form->getLabel('menutype', 'basic'); ?>
@@ -150,7 +148,7 @@ if( JVERSION >= 3){
 		<?php echo QuickcontentHelper::_('panel.endPanel' ) ; ?>
 		
 		
-	<?php echo QuickcontentHelper::_( 'panel.addPanel' , 'quickcontent', '分類清單' , 'category-list' ); ?>
+	<?php echo QuickcontentHelper::_( 'panel.addPanel' , 'quickcontent', JText::_('COM_QUICKCONTENT_FORM_OPTION_LIST') , 'category-list' ); ?>
 	
 	<!-- CATEGORY LIST PARAMS -->
 	<?php $this->showParams( 'list' ) ; ?>
@@ -159,7 +157,7 @@ if( JVERSION >= 3){
 	<?php echo QuickcontentHelper::_('panel.endPanel' ) ; ?>
 	
 	
-	<?php echo QuickcontentHelper::_( 'panel.addPanel' , 'quickcontent', '分類部落格' , 'category-blog' ); ?>
+	<?php echo QuickcontentHelper::_( 'panel.addPanel' , 'quickcontent', JText::_('COM_QUICKCONTENT_FORM_OPTION_BLOG') , 'category-blog' ); ?>
 	
 	<!-- CATEGORY BLOG PARAMS -->
 	<?php $this->showParams( 'blog' ) ; ?>
@@ -167,7 +165,7 @@ if( JVERSION >= 3){
 	<?php echo QuickcontentHelper::_('panel.endPanel' ) ; ?>
 	
 	
-		<?php echo QuickcontentHelper::_( 'panel.addPanel' , 'quickcontent' , '文章' , 'article' ); ?>
+		<?php echo QuickcontentHelper::_( 'panel.addPanel' , 'quickcontent' , JText::_('COM_QUICKCONTENT_FORM_OPTION_ARTICLE') , 'article' ); ?>
 		
 		<!-- CONTENT PARAMS -->
 		<?php $this->showParams( 'article' ) ; ?>

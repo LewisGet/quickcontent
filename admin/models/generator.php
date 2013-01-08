@@ -10,12 +10,16 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
+include_once AKPATH_COMPONENT.'/modellist.php' ;
 
 /**
  * Methods supporting a list of Quickcontent records.
  */
-class QuickcontentModelGenerator extends JModelList
+class QuickcontentModelGenerator extends AKModelList
 {
+	public 		$component = 'quickcontent' ;
+	public 		$item_name = 'Generator' ;
+	public 		$list_name = 'Generators' ;
 	
 	public $restore = array() ;
 
@@ -70,8 +74,14 @@ class QuickcontentModelGenerator extends JModelList
 		
 		// Save Restore
 		$content->restore = json_encode($this->restore);
-		$db = JFactory::getDbo();
-		$db->updateObject('#__quickcontent_lists', $content, 'id');
+		
+		// Set Generated
+		$content->generated = 1;
+		
+		
+		$content->params = (string)$content->params;
+		
+		$content->store();
 	}
 	
 	public function getCategories( $cats = null , $parent_id = null , $level = 1 ){
@@ -261,23 +271,11 @@ class QuickcontentModelGenerator extends JModelList
 		
 		$lorem = $this->params->get( 'lorem' );
 		
-		if( !$lorem ):
+		if( !$this->params->get( 'use_custom_lorem', 0 ) ):
 		
-			$dIntrotext 	= 
-<<<INTRO
-			<p><img src="http://placehold.it/200x300" alt="placeholder" width="200" height="300" style="margin:0 5px 5px 0;" align="left">彼得，說你在坐車裏常常伸出你的小手在車欄上跟著音樂按拍；你稍大些會得淘氣的時候，何嘗沒有羨慕的時候，但想起我做父親的往迹，與你一撮的遺灰，裝一個走江湖的桀卜閃人，因此我有時想，同在一個神奇的宇宙裡自得。</p>
-			<p>上山或是下山，那天在柏林的會館裏，只要把話匣開上，這問的後身便是無限的隱痛；我不能怨，但你應得帶書，你應得躲避她像你躲避青草裡一條美麗的花蛇！</p>
-			<p>你便蓋沒了你的小耳，這問的後身便是無限的隱痛；我不能怨，誰沒有悵惘？你是不認識你父親的，也不能給我們利益，我心頭便湧起了不少的感想；我的話你是永遠聽不著了，我們的鏈永遠是制定我們行動的上司！大大記得最清楚，可以懂得我話裏意味的深淺，約莫八九歲光景，你應得躲避她像你躲避青草裡一條美麗的花蛇！</p>
-			<p>假如你長大的話，極端的自私，我心頭便湧起了不少的感想；我的話你是永遠聽不著了，并且假如我這番不到歐洲，流入嫵媚的阿諾河去……並且你不但不須應伴，那才是你實際領受，他們的獨子，那邊每株樹上都是滿掛著詩情最秀逸的果實，小鵝，一般紫的紫籐，體魄與性靈，同在一個神奇的宇宙裡自得。</p>
-INTRO;
-			$dFulltext 	= 
-<<<FULL
-			<p>彼得，說你在坐車裏常常伸出你的小手在車欄上跟著音樂按拍；你稍大些會得淘氣的時候，何嘗沒有羨慕的時候，但想起我做父親的往迹，與你一撮的遺灰，裝一個走江湖的桀卜閃人，因此我有時想，同在一個神奇的宇宙裡自得。</p>
-			<p>上山或是下山，那天在柏林的會館裏，只要把話匣開上，這問的後身便是無限的隱痛；我不能怨，但你應得帶書，你應得躲避她像你躲避青草裡一條美麗的花蛇！</p>
-			<p>你便蓋沒了你的小耳，這問的後身便是無限的隱痛；我不能怨，誰沒有悵惘？你是不認識你父親的，也不能給我們利益，我心頭便湧起了不少的感想；我的話你是永遠聽不著了，我們的鏈永遠是制定我們行動的上司！大大記得最清楚，可以懂得我話裏意味的深淺，約莫八九歲光景，你應得躲避她像你躲避青草裡一條美麗的花蛇！</p>
-			<p>你便蓋沒了你的小耳，這問的後身便是無限的隱痛；我不能怨，誰沒有悵惘？你是不認識你父親的，也不能給我們利益，我心頭便湧起了不少的感想；我的話你是永遠聽不著了，我們的鏈永遠是制定我們行動的上司！大大記得最清楚，可以懂得我話裏意味的深淺，約莫八九歲光景，你應得躲避她像你躲避青草裡一條美麗的花蛇！</p>
-			<p>假如你長大的話，極端的自私，我心頭便湧起了不少的感想；我的話你是永遠聽不著了，并且假如我這番不到歐洲，流入嫵媚的阿諾河去……並且你不但不須應伴，那才是你實際領受，他們的獨子，那邊每株樹上都是滿掛著詩情最秀逸的果實，小鵝，一般紫的紫籐，體魄與性靈，同在一個神奇的宇宙裡自得。</p>
-FULL;
+			$dIntrotext 	= JText::_('COM_QUICKCONTENT_LOREM_INTROTEXT');
+			$dFulltext 		= JText::_('COM_QUICKCONTENT_LOREM_FULLTEXT');
+
 		else:
 			
 			$lorem = explode( '<hr id="system-readmore" />' , $lorem ) ;
@@ -360,18 +358,12 @@ FULL;
 	}
 	
 	public function getContent( $id ) {
-		$db = JFactory::getDbo();
-		$q = $db->getQuery(true) ;
+		$list = $this->getTable( 'list' , 'QuickcontentTable');
+		$list->load($id);
 		
-		$q->select("*")
-			->from("#__quickcontent_lists")
-			->where("id='{$id}'")
-			;
+		$list->params = new JRegistry($list->params);
 		
-		$db->setQuery($q);		
-		$result = $db->loadObject();
-		
-		return $result ;
+		return $list ;
 	}
 	
 	public function deleteAll() {
@@ -383,7 +375,29 @@ FULL;
 		$this->deleteMenus();
 		
 		$this->deleteMenuTypes();
+		
+		$this->clearGenerated();
 	}
+	
+	
+	/*
+	 * function clearRestore
+	 * @param 
+	 */
+	
+	public function clearGenerated()
+	{
+		$db = JFactory::getDbo();
+		$q = $db->getQuery(true) ;
+		
+		$q->update('#__quickcontent_lists')
+			->set('generated=0')
+			;
+		
+		$db->setQuery($q);
+		$db->query();
+	}
+	
 	
 	public function deleteMenuTypes(){
 		// Delete MenuTypes
@@ -519,6 +533,14 @@ FULL;
 		
 		// Delete MenuType
 		$this->deleteMenuTypes($restore->menutype[0]);
+		
+		
+		// Set Generated 0
+		$content->generated = '0';
+		
+		$content->params = (string)$content->params;
+		
+		$content->store();
 	}
 	
 	/*

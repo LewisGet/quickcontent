@@ -5,7 +5,7 @@
 	
 	<fieldset name="filter">
 		
-		<field
+		<!--<field
 			name="a.published"
 			type="list"
 			default=""
@@ -17,7 +17,7 @@
 	        <option value="0">JUNPUBLISHED</option>
 			<option value="-2">JTRASHED</option>
 			<option value="*">JALL</option>
-		</field>
+		</field>-->
 		
 		
 	</fieldset>

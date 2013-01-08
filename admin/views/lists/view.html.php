@@ -52,6 +52,10 @@ class QuickcontentViewLists extends AKViewList
 			return false;
 		}
 		
+		foreach( $this->items as &$item ):
+			$item->a_params = new JRegistry($item->a_params);
+		endforeach;
+		
 		parent::displayWithPanel($tpl);
 	}
 
@@ -67,13 +71,49 @@ class QuickcontentViewLists extends AKViewList
 		// Set title.
 		AKToolBarHelper::title( JText::_($this->text_prefix.'_TITLE_LIST'), 'article.png');
 		
-		parent::addToolbar();
+		$state	= $this->get('State');
+		$canDo	= AKHelper::getActions($this->option);
+		$user 	= JFactory::getUser() ;
+		$filter_state 	= $this->state->get('filter') ;
 		
-		$msg = '這將會清除所有文章、分類與選單（除了預設首頁選單外），你是否要繼續？' ;
-		//JToolBarHelper::deleteList( $msg , 'generator.deleteAll',  '清除全站資料' , false );
+        // Get the toolbar object instance
+		$bar = JToolBar::getInstance('toolbar');
+       
+		
+		// Toolbar Buttons
+		// ========================================================================
+		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories($this->option, 'core.create'))) > 0 ) {
+			JToolBarHelper::addNew( $this->item_name.'.add');
+		}
+
+		if ($canDo->get('core.edit')) {
+			JToolBarHelper::editList( $this->item_name.'.edit');
+		}
+
+		if ($canDo->get('core.edit.state')) {
+			JToolBarHelper::divider();
+			JToolbarHelper::checkin($this->list_name.'.checkin');
+			
+			JToolBarHelper::divider();
+		}
+		
+
+		JToolbarHelper::deleteList('Are you sure?', $this->list_name.'.delete');
+		
+		// Add a batch modal button
+		if ($user->authorise('core.edit') && JVERSION >= 3)
+		{
+			AKToolbarHelper::modal( 'JTOOLBAR_BATCH', 'batchModal');
+		}
+		
+		if ($canDo->get('core.admin')) {
+			AKToolBarHelper::preferences($this->option);
+		}
+		
+		$msg = JText::_('COM_QUICKCONTENT_CLEAR_WHOLE_SITE_ALERT') ;
 		
 		$bar = JToolBar::getInstance('toolbar');
-		$bar->appendButton('Confirm', $msg, 'delete', '清除全站資料', 'generator.deleteAll', false);
+		$bar->appendButton('Confirm', $msg, 'delete', 'COM_QUICKCONTENT_CLEAR_WHOLE_SITE', 'generator.deleteAll', false);
 	}
 	
 	

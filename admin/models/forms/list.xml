@@ -61,20 +61,20 @@
 			<field 
 				name="menutype"
 				type="text"
-				label="選單類型"
+				label="COM_QUICKCONTENT_MENUTYPE"
 				default="mainmenu"
 				class="inputbox"
-				description="將選單產生在此選單群組，若無此選單類型將新增一個。"
+				description="COM_QUICKCONTENT_MENUTYPE_DESC"
 				labelclass="control-label"
 			/>
 			
 			<field 
 				name="delete_existing"
 				type="radio"
-				label="清空該選單"
+				label="COM_QUICKCONTENT_CLEARMENU"
 				default="1"
 				class="inputbox btn-group"
-				description="新增前將此選單原有項目清空，預設選單將不會被刪除。"
+				description="COM_QUICKCONTENT_CLEARMENU_DESC"
 				labelclass="control-label"
 			>
 				<option value="1">JYES</option>
@@ -84,15 +84,15 @@
 			<field 
 				name="category_menutype"
 				type="list"
-				label="選單項目類型"
+				label="COM_QUICKCONTENT_VIEWTYPE"
 				default="list"
 				class="inputbox"
-				description="產生的選單以那一種類型展示。"
+				description="COM_QUICKCONTENT_VIEWTYPE"
 				labelclass="control-label"
 			>
-				<option value="list">清單</option>
-				<option value="blog">部落格</option>
-				<option value="0">無</option>
+				<option value="list">COM_QUICKCONTENT_VIEW_LIST</option>
+				<option value="blog">COM_QUICKCONTENT_VIEW_BLOG</option>
+				<option value="0">COM_QUICKCONTENT_VIEW_NONE</option>
 			</field>
 			
 			<field
@@ -167,24 +167,15 @@
 		</fieldset>
 		
 		<fieldset name="text" align="left">
-			<field name="introtext"
-				type="editor"
-				label="COM_QUICKCONTENT_INTROTEXT"
-				description="COM_QUICKCONTENT_INTROTEXT_DESC"
-				filter="raw"
-				buttons="true"
-				hide="readmore,pagebreak,article"
-				labelclass="control-label"
-			/>
-			
-			<field name="fulltext"
+			<field name="content"
 				type="editor"
 				label="COM_QUICKCONTENT_FULLTEXT"
 				description="COM_QUICKCONTENT_FULLTEXT_DESC"
 				filter="raw"
 				buttons="true"
-				hide="readmore,pagebreak,article"
+				hide="readmore,pagebreak,article,image"
 				labelclass="control-label"
+				editor="tinymce"
 			/>
 	
 			<field name="checked_out" type="hidden" filter="unset" />
