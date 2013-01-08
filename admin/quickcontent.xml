@@ -65,11 +65,5 @@
 		<!--<plugin>plg_system_quickcontent</plugin>-->
 	</plugins>
 	
-	
-	<updateservers>
-        <server type="extension" priority="1" name="Asikart Quickcontent Component">http://update.asikart.com/component/com_quickcontent.xml</server>
-    </updateservers>
-	
-	
 </extension>
 
