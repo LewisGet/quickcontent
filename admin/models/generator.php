@@ -137,7 +137,7 @@ class QuickcontentModelGenerator extends AKModelList
 		
 		$t->setLocation( $pid['cat'] , 'last-child' ) ;
 		
-		$this->tranAlias( &$t );
+		$this->tranAlias( $t );
 		$t->check();
 		$this->app->triggerEvent( 'onContentBeforeSave' , array( 'com_categories.category', &$t, true ) ) ;
 		

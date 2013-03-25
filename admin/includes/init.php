@@ -57,3 +57,8 @@ if( $app->isSite() ){
 // Detect version
 QuickcontentHelper::_('plugin.attachPlugins');
 
+// Debug
+define('AKDEBUG', QuickcontentHelper::_('system.getConfig', 'system.debug')) ;
+
+// Panel
+QuickcontentHelper::_('panel.setLegacy', true) ;
