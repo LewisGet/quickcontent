@@ -139,7 +139,7 @@ class QuickcontentModelGenerator extends AKModelList
 		
 		$this->tranAlias( $t );
 		$t->check();
-		$this->app->triggerEvent( 'onContentBeforeSave' , array( 'com_categories.category', &$t, true ) ) ;
+		$this->app->triggerEvent( 'onContentBeforeSave' , array( 'com_categories.category', $t, true ) ) ;
 		
 		// is same alias exists?
 		$t2 = JTable::getInstance('Category','JTable');
@@ -160,7 +160,7 @@ class QuickcontentModelGenerator extends AKModelList
 		
 		// OK, store!
 		$t->store();
-		$this->app->triggerEvent( 'onContentAfterSave' , array( 'com_content.article', &$t, true ) ) ;
+		$this->app->triggerEvent( 'onContentAfterSave' , array( 'com_content.article', $t, true ) ) ;
 		
 		$pid['cat'] = $t->id;
 		
@@ -296,9 +296,9 @@ class QuickcontentModelGenerator extends AKModelList
 		//$t->  ;
 		//$t->  ;
 		
-		$this->tranAlias( &$t );
+		$this->tranAlias( $t );
 		$t->check();
-		$this->app->triggerEvent( 'onContentBeforeSave' , array( 'com_content.article', &$t, true ) ) ;
+		$this->app->triggerEvent( 'onContentBeforeSave' , array( 'com_content.article', $t, true ) ) ;
 		
 		// is same alias exists?
 		$t2 = JTable::getInstance('Content','JTable');
@@ -319,7 +319,7 @@ class QuickcontentModelGenerator extends AKModelList
 		
 		
 		$t->store();
-		$this->app->triggerEvent( 'onContentAfterSave' , array( 'com_content.article', &$t, true ) ) ;
+		$this->app->triggerEvent( 'onContentAfterSave' , array( 'com_content.article', $t, true ) ) ;
 		
 		// Set Restore
 		$this->restore['articles'][] = $t->id ;
