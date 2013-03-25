@@ -38,6 +38,27 @@ class AKHelperUri {
 	    return $uri->toString();
 	}
 	
+	
+	
+	/*
+	 * function pathAddSubfolder
+	 * @param $path
+	 */
+	
+	public static function pathAddSubfolder( $path )
+	{
+		$uri 		= JFactory::getURI() ;
+		$host 		= $uri->getScheme().'://'.$uri->getHost();
+		$current 	= JURI::root();
+		
+		$subfolder 	= str_replace( $host, '', $current );
+		$subfolder 	= trim($subfolder, '/') ;
+		
+		return $subfolder . '/' . trim($path, '/') ;
+	}
+	
+	
+	
 	public static function base64( $action , $url ) {
 		
 		switch($action) {
@@ -71,11 +92,25 @@ class AKHelperUri {
 		$root 	= $absoulte ? JURI::base() : '' ;
 		$option = JRequest::getVar('option') ;
 		
-		if($client = 'site'){
+		if($client == 'site'){
 			return $root.'components/'.$option ;
 		}else{
 			return $root.'components/'.$option ;
 		}
+	}
+	
+	
+	/*
+	 * function windwalker
+	 * @param $client
+	 */
+	
+	public static function windwalker($absoulte = false)
+	{
+		$root 	= $absoulte ? JURI::base() : '' ;
+		$option = JRequest::getVar('option') ;
+		
+		return $root.'libraries/windwalker' ;
 	}
 }
 

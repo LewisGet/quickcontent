@@ -18,6 +18,36 @@ class AKHelperInclude
 	static $bootstrap ;
 	static $bluestork ;
 	
+	
+	/*
+	 * function dropdownCheckbox
+	 * @param $framework
+	 */
+	
+	public static function dropdownCheckbox($id = 'MultiSelect', $framework = true)
+	{
+		if($framework) {
+			JHtml::_('behavior.framework', true) ;
+		}
+		
+		$doc = JFactory::getDocument();
+		$script = AKHelper::_('path.getWWUrl').'/assets/js/mootools/multi-select/source/' . (JDEBUG ? 'MultiSelect-uncompressed.js' : 'MultiSelect.js') ;
+		$css	= AKHelper::_('path.getWWUrl').'/assets/js/mootools/multi-select/css/MultiSelect.css';
+		
+		$doc->addScript( $script );
+		$doc->addStylesheet( $css );
+		
+		$instance = <<<JS
+		window.addEvent('domready', function(){
+			var AKMultiSelect_{$id} = new MultiSelect('.{$id}');
+		});
+JS;
+		
+		$doc->addScriptDeclaration($instance);
+	}
+	
+	
+	
 	/*
 	 * function core
 	 * @param 
@@ -32,39 +62,19 @@ class AKHelperInclude
 		
 		$prefix = $app->isAdmin() ? '../' : '' ;
 		
-		JHtml::_('stylesheet', $prefix.'components/'.$option.'/includes/css/'.$com_name.'-core.css');
-		JHtml::_('stylesheet', $prefix.'components/'.$option.'/includes/css/'.$com_name.'.css');
-		
 		if($js){
 			JHtml::_('behavior.framework', true);
-			JHtml::_('script', $prefix.'components/'.$option.'/includes/js/'.$com_name.'-core.js', true);
-			JHtml::_('script', $prefix.'components/'.$option.'/includes/js/'.$com_name.'.js', true);
+			if($app->isSite()){
+				$doc->addScript( AKHelper::_('path.getWWUrl').'/assets/js/windwalker.js');
+				$doc->addScript( 'components/'.$option.'/includes/js/'.$com_name.'.js');
+			}else{
+				$doc->addScript( AKHelper::_('path.getWWUrl').'/assets/js/windwalker-admin.js');
+				$doc->addScript( 'components/'.$option.'/includes/js/'.$com_name.'-admin.js');
+			}
 		}
 	}
 	
-	
-	/*
-	 * function foundation
-	 * @param 
-	 */
-	
-	public static function foundation($appl = true, $js = true)
-	{
-		$doc = JFactory::getDocument();
-		$app = JFactory::getApplication() ;
-		$option = JRequest::getVar('option') ;
-		
-		$prefix = $app->isSite() ? 'administrator/' : '' ;
-		
-		JHtml::_('stylesheet', $prefix.'components/'.$option.'/includes/foundation/stylesheets/foundation.min.css');
-		if($appl) JHtml::_('stylesheet', $prefix.'components/'.$option.'/includes/foundation/stylesheets/app.css');
-		
-		if($js){
-			JHtml::_('script', $prefix.'components/'.$option.'/includes/foundation/javascripts/modernizr.foundation.js');
-			JHtml::_('script', $prefix.'components/'.$option.'/includes/foundation/javascripts/foundation.min.js');
-			if($appl) JHtml::_('script', $prefix.'components/'.$option.'/includes/foundation/javascripts/app.js');
-		}
-	}
+
 	
 	/*
 	 * function bootstrap
@@ -160,6 +170,41 @@ class AKHelperInclude
 	
 	
 	/*
+	 * function addCSS
+	 * @param $path
+	 */
+	
+	public static function addCSS($path = null, $client = null)
+	{
+		$doc = JFactory::getDocument();
+		
+		if($client == 'windwalker' || $client == 'ww'){
+			$doc->addStylesheet( JURI::root(true) . '/' .  AKHelper::_('uri.windwalker').'/assets/css/'.$path ) ;
+		}else{
+			$doc->addStylesheet( AKHelper::_('uri.component', $client).'/includes/css/'.$path ) ;
+		}
+	}
+	
+	/*
+	 * function addJS
+	 * @param $path
+	 */
+	
+	public static function addJS($path = null, $client = null)
+	{
+		$doc = JFactory::getDocument();
+		
+		
+		
+		if($client == 'windwalker' || $client == 'ww'){
+			$doc->addScript( JURI::root(true) . '/' .  AKHelper::_('uri.windwalker').'/assets/js/'.$path ) ;
+		}else{
+			$doc->addScript( AKHelper::_('uri.component', $client).'/includes/js/'.$path ) ;
+		}
+	}
+	
+	
+	/*
 	 * function includeStyleByNumber
 	 * @param $path
 	 */
@@ -169,6 +214,14 @@ class AKHelperInclude
 		$files 	= JFolder::files(AKHelper::_('path.get', $client).'/'.$path, ".css$", true);
 		$doc 	= JFactory::getDocument();
 		$option = JRequest::getVar('option') ;
+		$app = JFactory::getApplication() ;
+		
+		if($app->isSite()){
+			$doc->addStylesheet( AKHelper::_('path.getWWUrl').'/assets/css/windwalker.css');
+		}
+		else{
+			$doc->addStylesheet( AKHelper::_('path.getWWUrl').'/assets/css/windwalker-admin.css');
+		}
 		
 		foreach( $files as $key => $file ):
 			$name = explode('-', $file) ;
@@ -178,4 +231,21 @@ class AKHelperInclude
 		endforeach;
 	}
 	
+	
+	/*
+	 * function quickedit
+	 * @param 
+	 */
+	
+	public static function quickedit()
+	{
+		JHtml::_('behavior.framework', true);
+		self::addJS('quickedit.js', 'ww') ;
+		
+		$option = JRequest::getVar('option') ;
+		$view 	= JRequest::getVar('view') ;
+		
+		$doc = JFactory::getDocument();
+		$doc->addScriptDeclaration('AKQuickEdit.init( { "option" : "'.$option.'", "view" : "'.$view.'" } )');
+	}
 }

@@ -70,25 +70,57 @@ class AKModelAdmin extends JModelAdmin
 	
 	
 	/*
-	 * function getFields
+	 * This Function is deprecated.
 	 * @param 
 	 */
 	
 	public function getFields()
 	{
-		if(!empty($this->fields_name)) return $this->fields_name ;
+		// This Function is deprecated.
+		return $this->getFieldsName();
+	}
+	
+	
+	
+	/*
+	 * function getFields
+	 * @param 
+	 */
+	
+	public function getFieldsGroup()
+	{
+		if(!empty($this->fields_group)) return $this->fields_group ;
 		
 		$xml_file 		= AKHelper::_('path.get').'/models/forms/'.$this->item_name.'.xml' ;
 		$xml 			= JFactory::getXML( $xml_file );
 		$fields 		= $xml->xpath('/form/fields');
 		$fields_name 	= array();
+		$fields_group	= array();
 		
 		foreach( $fields as $field ):
 			if( (string) $field['name'] != 'other' )
-				$fields_name[] = (string) $field['name'] ;
+				$fields_name[] 	= (string) $field['name'] ;
+				$fields_group[] = $field ;
 		endforeach;
 		
-		return $this->fields_name = $fields_name ;
+		$this->fields_name = $fields_name ;
+		
+		return $this->fields_group = $fields_group ;
+	}
+	
+	
+	/*
+	 * function getFields
+	 * @param 
+	 */
+	
+	public function getFieldsName()
+	{
+		if(!empty($this->fields_name)) return $this->fields_name ;
+		
+		$this->getFieldsGroup() ;
+		
+		return $this->fields_name ;
 	}
 	
 	
@@ -109,6 +141,9 @@ class AKModelAdmin extends JModelAdmin
 			$data = $this->getItem();
 		}else{
 			$data = new JObject($data);
+			
+			// If Error occured and resend, just return data.
+			return $data ;
 		}
 		
 		
@@ -116,12 +151,7 @@ class AKModelAdmin extends JModelAdmin
 		// Get params, convert $data->params['xxx'] to $data->param_xxx
 		// ==========================================================================================
 		if( isset($data->params) && is_array($data->params)){
-			foreach( $data->params as $key => $param ):
-				$key = 'param_'.$key ;
-				if(empty($data->$key)){
-					$data->$key = $param ;
-				}
-			endforeach;
+			$data = AKHelper::_('array.pivotToPrefix', 'param_', $data->params, $data) ;
 		}
 		
 		
@@ -134,6 +164,17 @@ class AKModelAdmin extends JModelAdmin
 		foreach( $fields as $field ):
 			$data->$field = clone $data ;
 		endforeach;
+		
+		
+		
+		// If page reload, retain data
+		// ==========================================================================================
+		$retain = JRequest::getVar('retain', 0) ;
+		
+		// Set Change Field Type Retain Data
+		if($retain) {
+			$data 	= JRequest::getVar('jform') ;
+		}
 		
 		
 		return $data;
@@ -194,10 +235,6 @@ class AKModelAdmin extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-		if(!empty($this->item)) {
-			return $this->item ;
-		}
-		
 		return $this->item = parent::getItem($pk);
 	}
 	
@@ -256,6 +293,25 @@ class AKModelAdmin extends JModelAdmin
     {
         $user = JFactory::getUser();
         return $user->authorise('core.edit.state', $this->option.'.'.$this->item_name.'.'.$record->id);
+	}
+	
+	
+	
+	/**
+	 * A protected method to get a set of ordering conditions.
+	 *
+	 * @param   object	A record object.
+	 *
+	 * @return  array  An array of conditions to add to add to ordering queries.
+	 * @since   1.6
+	 */
+	protected function getReorderConditions($table)
+	{
+		if(property_exists($table, 'catid')){
+			$condition = array();
+			$condition[] = 'catid = '.(int) $table->catid;
+			return $condition;
+		}
 	}
 	
 	
@@ -346,10 +402,18 @@ class AKModelAdmin extends JModelAdmin
 		$date 	= JFactory::getDate( 'now' , JFactory::getConfig()->get('offset') ) ;
 		$user 	= JFactory::getUser() ;
 		$db 	= JFactory::getDbo();
+		$task	= JRequest::getVar('task') ;
+		
+		// Handle Save as copy
+		if( $task == 'save2copy' ) {
+			$table->id = null ;
+			$table->title = $table->title . ' (2)' ;
+			$table->alias = $table->alias . ' 2' ;
+		}
 		
 		
 		// alias
-        if( isset($table->alias) ) {
+        if( property_exists($table, 'alias') ) {
 			
 			if(!$table->alias){
 				$table->alias = JFilterOutput::stringURLSafe( trim($table->title) ) ;
@@ -363,29 +427,30 @@ class AKModelAdmin extends JModelAdmin
 		}
 		
 		// created date
-		if(isset($table->created) && !$table->created){
+		if(property_exists($table ,'created') && !$table->created){
 			$table->created = $date->toSql(true);
 		}
 		
 		// modified date
-		if(isset($table->modified) && $table->id){
+		if(property_exists($table, 'modified') && $table->id){
 			$table->modified = $date->toSql(true);
 		}
 		
 		// created user
-		if(isset($table->created_by) && !$table->created_by){
+		if(property_exists($table, 'created_by') && !$table->created_by){
 			$table->created_by = $user->get('id');
 		}
 		
 		// modified user
-		if(isset($table->modified_by) && $table->id){
+		if(property_exists($table, 'modified_by') && $table->id){
 			$table->modified_by = $user->get('id');
 		}
 		
 		
 		// Version
-		$table->version++ ;
-		
+		if(isset($table->version)){
+			$table->version++ ;
+		}
 		
 		
 		// Set Ordering or Nested ordering
@@ -412,15 +477,108 @@ class AKModelAdmin extends JModelAdmin
 				}
 			}
 			
-		}else{
-			if (!$table->id) {
-				// Set ordering to the last item if not set
-				if (!$table->ordering) {
-					$table->reorder('catid = '.(int) $table->catid.' AND published >= 0');
-				}
+		}elseif( property_exists($table , 'ordering') ){
+			if (empty($table->id)) {
+				$this->setOrderPosition($table) ;
 			}
 		}
 		
+		
+		// Set Fields if CCKEngine Enabled
+		if($this->getState('CCKEngine.enabled')) {
+			AKHelper::_('fields.setFieldTable', $table, null, array( 'context' => "{$this->option}.{$this->item_name}" )) ;
+		}
+	}
+	
+	
+	
+	/*
+	 * function setOrderPosition
+	 * @param $position
+	 */
+	
+	public function setOrderPosition($table, $position = null)
+	{
+		if($position == 'first') {
+			if (!$table->ordering) {
+				$table->reorder('catid = '.(int) $table->catid.' AND published >= 0');
+			}
+		}else{
+	
+			// Set ordering to the last item if not set
+			if (empty($table->ordering)) {
+				$db = JFactory::getDbo();
+				$db->setQuery('SELECT MAX(ordering) FROM #__'.$this->component.'_'.$this->list_name);
+				$max = $db->loadResult();
+
+				$table->ordering = $max+1;
+			}
+		}
+		
+	}
+	
+	
+	
+	/**
+	 * Method to duplicate modules.
+	 *
+	 * @param   array  &$pks  An array of primary key IDs.
+	 *
+	 * @return  boolean  True if successful.
+	 *
+	 * @since   1.6
+	 * @throws  Exception
+	 */
+	public function duplicate(&$pks)
+	{
+		// Initialise variables.
+		$user	= JFactory::getUser();
+		$db		= $this->getDbo();
+
+		// Access checks.
+		if (!$user->authorise('core.create', 'com_'.$this->component))
+		{
+			throw new Exception(JText::_('JERROR_CORE_CREATE_NOT_PERMITTED'));
+		}
+
+		$table = $this->getTable();
+
+		foreach ($pks as $pk)
+		{
+			if ($table->load($pk, true))
+			{
+				// Reset the id to create a new record.
+				$table->id = 0;
+
+				// Alter the title.
+				if( property_exists($table, 'title') ) {
+					$table->title = $allow_fields['title'] = JString::increment($table->title);
+				}
+				
+				if( property_exists($table, 'alias') ) {
+					$table->alias = $allow_fields['alias'] = JString::increment($table->alias, 'dash');
+				}
+				
+				// Unpublish duplicate item
+				// $table->published = 0;
+
+				if (!$table->check() || !$table->store())
+				{
+					throw new Exception($table->getError());
+				}
+
+			}
+			else
+			{
+				throw new Exception($table->getError());
+			}
+		}
+
+
+		// Clear modules cache
+		$this->cleanCache();
+
+		return true;
 	}
 	
 	
@@ -437,11 +595,17 @@ class AKModelAdmin extends JModelAdmin
      * @since   12.2
      */
     public function batch($commands, $pks, $contexts)
-	{		
+	{
+		$table 	= $this->getTable();
+		$user 	= JFactory::getUser();
+		$nested = ($table instanceof JTableNested) ? true : false ;
+		$extension 	= $this->option;
+		$i = 0;
+		
 		// Sanitize user ids.
         $pks = array_unique($pks);
         JArrayHelper::toInteger($pks);
- 
+
         // Remove any values of zero.
         if (array_search(0, $pks, true))
         {
@@ -456,14 +620,27 @@ class AKModelAdmin extends JModelAdmin
  
         $done = array();
 		
+		$cmd = JArrayHelper::getValue($commands, 'move_copy', 'm');
+		unset($commands['move_copy']);
 		
-		if (!empty($commands['parent_id']))
-        {
-            $cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
-
-            if ($cmd == 'c')
+		// unset no value keys
+		foreach( $commands as $key => $val ):
+			if(!$val) {
+				unset($commands[$key]) ;
+				continue ;
+			}
+		endforeach;
+		
+		
+		
+		// Nested Batch
+		// ==========================================================================================
+		$parentId = JArrayHelper::getValue( $commands, 'parent_id' ) ;
+		$nested_copied = false ;
+		if($nested && $parentId) {
+			if ($cmd == 'c')
             {
-                $result = $this->batchCopyNested($commands['parent_id'], $pks, $contexts);
+                $result = $this->batchCopyNested($parentId, $pks, $contexts);
                 if (is_array($result))
                 {
                     $pks = $result;
@@ -473,62 +650,116 @@ class AKModelAdmin extends JModelAdmin
                     return false;
                 }
             }
-            elseif ($cmd == 'm' && !$this->batchMoveNested($commands['parent_id'], $pks, $contexts))
+            elseif ($cmd == 'm' && !$this->batchMoveNested($parentId, $pks, $contexts))
             {
                 return false;
             }
             $done = true;
-        }
+			$nested_copied = true ;
+		}
 		
-		if (!empty($commands['category_id']))
-        {
-            $cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
- 
-            if ($cmd == 'c')
-            {
-                $result = $this->batchCopy($commands['category_id'], $pks, $contexts);
-                if (is_array($result))
-                {
-                    $pks = $result;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            elseif ($cmd == 'm' && !$this->batchMove($commands['category_id'], $pks, $contexts))
-            {
-                return false;
-            }
+		
+		
+		// Start Batch Process
+		// ==========================================================================================
+		foreach( $pks as $pk ):
 			
-			// If is Nested, rebuild all
-			$table = $this->getTable();
-			if($table instanceof JTableNested){
-				$this->rebuild();
+			// Can item editable?
+			if (!$user->authorise('core.edit', $contexts[$pk]))
+			{
+				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+				return false;
 			}
 			
-            $done = true;
-        }
- 
-        if (!empty($commands['assetgroup_id']))
-        {
-            if (!$this->batchAccess($commands['assetgroup_id'], $pks, $contexts))
-            {
-                return false;
-            }
- 
-            $done = true;
-        }
- 
-        if (!empty($commands['language_id']))
-        {
-            if (!$this->batchLanguage($commands['language_id'], $pks, $contexts))
-            {
-                return false;
-            }
- 
-            $done = true;
-        }
+			$table->load($pk);
+			$allow_fields = array();
+			
+			// Set Value
+			foreach( $commands as $key => $val ):
+				
+				if(!$val) {
+					unset($commands[$key]) ;
+					continue ;
+				}
+				
+				// Detect Category Access
+				if( $key == 'catid' ) {
+					if (!$user->authorise('core.create', $this->option . '.category.' . $val))
+					{
+						$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+						return false;
+					}
+				}
+				
+				
+				// Set value in table
+				if( property_exists($table, $key) ) {
+					$table->$key = $val ;
+					$allow_fields[$key] = $val ;
+				}
+				
+				$done = true ;
+				
+			endforeach;
+			
+			
+			// Handle Nested Batch
+			// ==========================================================================================
+			if( $nested && in_array('parent_id', $commands) ) {
+				if (!$user->authorise('core.create', $this->option . '.category.' . $val))
+				{
+					$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
+					return false;
+				}
+			}
+			
+			
+			
+			// Copy or Move
+			// ==========================================================================================
+			if( $cmd == 'c' && !$nested_copied) {
+				// Set id as New
+				$table->id = null ;
+				
+				// Handle Title increment
+				$table2 = $this->getTable();
+				
+				if( property_exists($table, 'title') ) $allow_fields['title'] = $table->title ;
+				if( property_exists($table, 'alias') ) $allow_fields['alias'] = $table->alias ;
+				
+				while ($table2->load( $allow_fields ))
+				{
+					if( property_exists($table, 'title') ) {
+						$table->title = $allow_fields['title'] = JString::increment($table->title);
+					}
+					
+					if( property_exists($table, 'alias') ) {
+						$table->alias = $allow_fields['alias'] = JString::increment($table->alias, 'dash');
+					}
+				}
+				
+			}
+			
+			
+			// Check the row.
+			if (!$table->check())
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Store the row.
+			if (!$table->store())
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+			
+		endforeach;
+		
+		// Clean the cache
+		$this->cleanCache();
+	
  
         if (!$done)
         {
@@ -869,4 +1100,5 @@ class AKModelAdmin extends JModelAdmin
 
 		return true;
 	}
+	
 }

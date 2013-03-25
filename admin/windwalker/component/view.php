@@ -16,12 +16,14 @@ jimport('joomla.application.component.view');
 
 class AKView extends JViewLegacy
 {
-	public function displayWithPanel($tpl=null)
+	public function displayWithPanel($tpl=null, $path = null)
 	{
+		$path = $path ? $path : AKPATH_LAYOUTS ;
+		
 		$this->innerLayout = JRequest::getVar('layout','default');
 		$this->setLayout('panel');
 		
-		$this->addTemplatePath(AKPATH_LAYOUTS);
+		$this->addTemplatePath($path);
 		$result = $this->loadTemplate($tpl);
 		
 		if (JError::isError($result)) {
@@ -40,6 +42,20 @@ class AKView extends JViewLegacy
 	}
 	
 	
+	
+	/*
+	 * function settitle
+	 * @param 
+	 */
+	
+	public function setTitle($title)
+	{
+		$doc = JFactory::getDocument();
+		$doc->setTitle($title) ;
+	}
+	
+	
+	
 	/*
 	 * function showInfo
 	 * @param $key
@@ -54,7 +70,7 @@ class AKView extends JViewLegacy
 		$lang  = $strip ? substr($key, 2) : $key ;
 		
 		if(!$label){
-			$label = JText::_('COM_QUICKCONTENT_'.strtoupper($lang)) ;
+			$label = JText::_('COM_FLOWER_'.strtoupper($lang)) ;
 		}else{
 			$label = JText::_(strtoupper($label)) ;
 		}
@@ -69,9 +85,9 @@ class AKView extends JViewLegacy
 		
 		$info =
 <<<INFO
-		<div class="{$lang} {$class}" fltlft">
+		<div class="{$lang} {$class}">
 			<span class="label">{$label}:</span>
-			<span class="valur">{$value}</span>
+			<span class="value">{$value}</span>
 		</div>
 INFO;
 		return $info ;

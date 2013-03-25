@@ -24,7 +24,7 @@ $install_windwalker = true ;
 if(JFile::exists($windwalker_xml_path)) {
 	$windwalker_xml = JFactory::getXML($windwalker_xml_path, true);
 	$install_xml	= JFactory::getXML($install_path.'/windwalker.xml', true);
-
+	
 	if( (string)$install_xml->version <= (string)$windwalker_xml->version ) {
 		$install_windwalker = false ;
 	}

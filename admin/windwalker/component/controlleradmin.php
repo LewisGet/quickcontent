@@ -166,6 +166,35 @@ class AKControllerAdmin extends JControllerAdmin
 	
 	
 	/**
+	 * Method to clone an existing module.
+	 * @since	1.6
+	 */
+	public function duplicate()
+	{
+		// Check for request forgeries
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Initialise variables.
+		$pks = JRequest::getVar('cid', array(), 'post', 'array');
+		JArrayHelper::toInteger($pks);
+
+		try {
+			if (empty($pks)) {
+				throw new Exception(JText::_($this->text_prefix . '_NO_ITEM_SELECTED'));
+			}
+			$model = $this->getModel();
+			$model->duplicate($pks);
+			$this->setMessage(JText::_('JLIB_APPLICATION_SUCCESS_BATCH'));
+		} catch (Exception $e) {
+			JError::raiseWarning(500, $e->getMessage());
+		}
+
+		$this->setRedirect('index.php?option=com_'.$this->component.'&view='.$this->view_list);
+	}
+	
+	
+	
+	/**
      * Set a URL for browser redirection.
      *
      * @param   string  $url   URL to redirect to.
@@ -192,4 +221,38 @@ class AKControllerAdmin extends JControllerAdmin
 			return parent::setRedirect($url, $msg, $type) ;
 		}
     }
+	
+	
+	
+	/*
+	 * function changeFieldData
+	 * @param 
+	 */
+	
+	public function editFieldData()
+	{
+		$id 	= JRequest::getVar('id') ;
+		$field 	= JRequest::getVar('field') ;
+		//$table 	= JRequest::getVar('table') ;
+		$content = JRequest::getVar('content') ;
+		
+		$model = $this->getModel() ;
+		$table = $model->getTable();
+		$table->load($id) ;
+		$result = 'false' ;
+		
+		if(property_exists($table, $field)) {
+			$table->$field = $content ;
+			$table->check();
+			
+			if( !$table->store() ) {
+				$result = 'false' ;
+			}else{
+				$result = 'true' ;
+			}
+		}
+		
+		echo '{"AKResult":'.$result.', "message" : "'.$table->getError().'"}' ;
+		jexit();
+	}
 }

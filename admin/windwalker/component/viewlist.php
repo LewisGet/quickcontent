@@ -29,13 +29,14 @@ class AKViewList extends AKView
 	/**
 	 * Display the view
 	 */
-	public function displayWithPanel($tpl = null)
+	public function displayWithPanel($tpl = null, $path = null)
 	{
 		$app = JFactory::getApplication() ;
 		
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal') {
 			$this->addToolbar();
+			$this->sidebarFilter();
 			
 			if( JVERSION >= 3 ){
 				$this->sidebar = JHtmlSidebar::render();
@@ -55,7 +56,7 @@ class AKViewList extends AKView
 		if($app->isAdmin())	{
 			parent::display($tpl);
 		}else{
-			parent::displayWithPanel($tpl);
+			parent::displayWithPanel($tpl, $path);
 		}
 	}
 	
@@ -68,6 +69,7 @@ class AKViewList extends AKView
 	 */
 	protected function addToolbar()
 	{
+		$app 	= JFactory::getApplication() ;
 		$state	= $this->get('State');
 		$canDo	= AKHelper::getActions($this->option);
 		$user 	= JFactory::getUser() ;
@@ -79,12 +81,16 @@ class AKViewList extends AKView
 		
 		// Toolbar Buttons
 		// ========================================================================
-		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories($this->option, 'core.create'))) > 0 ) {
+		if ($canDo->get('core.create') ) {
 			JToolBarHelper::addNew( $this->item_name.'.add');
 		}
 
 		if ($canDo->get('core.edit')) {
 			JToolBarHelper::editList( $this->item_name.'.edit');
+		}
+		
+		if ($canDo->get('core.create')) {
+			JToolBarHelper::custom($this->list_name.'.duplicate', 'copy.png', 'copy_f2.png', 'JTOOLBAR_DUPLICATE', true);
 		}
 
 		if ($canDo->get('core.edit.state')) {
@@ -100,24 +106,36 @@ class AKViewList extends AKView
 			JToolBarHelper::divider();
 		}
 		
-		if ($filter_state['a.published'] == -2 && $canDo->get('core.delete')) {
-			JToolbarHelper::deleteList('Are you sure?', $this->list_name.'.delete');
+		if ( (JArrayHelper::getValue($filter_state, 'a.published') == -2 && $canDo->get('core.delete') ) || $this->get('no_trash') || AKDEBUG ) {
+			JToolbarHelper::deleteList(JText::_('LIB_WINDWALKER_TOOLBAR_CONFIRM_DELETE'), $this->list_name.'.delete');
 		}
 		elseif ($canDo->get('core.edit.state')) {
 			JToolbarHelper::trash($this->list_name.'.trash');
 		}
 		
 		// Add a batch modal button
-		if ($user->authorise('core.edit') && JVERSION >= 3)
+		$batch = AKHelper::_('path.get').'/views/'.$this->list_name.'/tmpl/default_batch.php';
+		if ($canDo->get('core.edit') && JVERSION >= 3 && JFile::exists($batch))
 		{
 			AKToolbarHelper::modal( 'JTOOLBAR_BATCH', 'batchModal');
 		}
 		
-		if ($canDo->get('core.admin')) {
+		if ($canDo->get('core.admin') && $app->isAdmin() ) {
 			AKToolBarHelper::preferences($this->option);
 		}
 		
 		
+	}
+	
+	
+	
+	/*
+	 * function sidebarFilter
+	 * @param 
+	 */
+	
+	public function sidebarFilter()
+	{
 		// Sidebar Filters
 		// ========================================================================
 		
@@ -146,7 +164,6 @@ class AKViewList extends AKView
 			endforeach;
 			
 		}
-		
 	}
 	
 	

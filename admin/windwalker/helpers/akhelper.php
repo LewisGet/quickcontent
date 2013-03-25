@@ -13,6 +13,10 @@ defined('_JEXEC') or die;
 
 class AKHelper extends AKProxy
 {
+	static $config = array();
+	
+	static $version ;
+	
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
@@ -69,6 +73,17 @@ class AKHelper extends AKProxy
 			return true;
 		else 
 			return false;
+	}
+	
+	
+	/*
+	 * function getParams
+	 * @param 
+	 */
+	
+	public static function getParams($option = null)
+	{
+		return AKHelper::_('system.getParams', $option) ;
 	}
 }
 
