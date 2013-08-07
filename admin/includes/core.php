@@ -11,6 +11,9 @@
 // no direct access
 defined('_JEXEC') or die;
 
+// Include Filesystem
+jimport('joomla.filesystem.folder');
+jimport('joomla.filesystem.file');
 
 // Detect is AKHelper exists
 // ===============================================================
