@@ -22,6 +22,8 @@ $lang 	= JFactory::getLanguage();
 // Core init, it can use by module, plugin or other component.
 include_once JPath::clean( JPATH_ADMINISTRATOR . "/components/com_quickcontent/includes/core.php" ) ;
 
+// Set default option to path helper, then AKHelperPath will helpe us get admin path.
+AKHelper::_('path.setOption', 'com_quickcontent') ;
 
 // Some useful settings
 if( $app->isSite() ){
@@ -43,9 +45,6 @@ if( $app->isSite() ){
 	QuickcontentHelper::_('lang.loadAll', $lang->getTag());
 	QuickcontentHelper::_('include.sortedStyle', 'includes/css');
 }
-
-// Set default option to path helper, then AKHelperPath will helpe us get admin path.
-AKHelper::_('path.setOption', 'com_quickcontent') ;
 
 // Detect version
 QuickcontentHelper::_('plugin.attachPlugins');
