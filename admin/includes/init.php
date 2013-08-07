@@ -16,15 +16,6 @@ $app 	= JFactory::getApplication();
 $lang 	= JFactory::getLanguage();
 
 
-
-// Define
-// ========================================================================
-define('QUICKCONTENT_SITE' , JPATH_COMPONENT_SITE );
-define('QUICKCONTENT_ADMIN', JPATH_COMPONENT_ADMINISTRATOR);
-define('QUICKCONTENT_SELF' , JPATH_COMPONENT);
-
-
-
 // Include Helpers
 // ========================================================================
 
@@ -53,6 +44,8 @@ if( $app->isSite() ){
 	QuickcontentHelper::_('include.sortedStyle', 'includes/css');
 }
 
+// Set default option to path helper, then AKHelperPath will helpe us get admin path.
+AKHelper::_('path.setOption', 'com_quickcontent') ;
 
 // Detect version
 QuickcontentHelper::_('plugin.attachPlugins');

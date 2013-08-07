@@ -55,12 +55,16 @@ if( !defined('AKPATH_ROOT') ) {
 	include_once AKPATH_ROOT.'/init.php' ;
 }
 
+
+// Define
+// ========================================================================
+define('QUICKCONTENT_SITE' , JPath::clean( JPATH_SITE . "/components/com_quickcontent" ) );
+define('QUICKCONTENT_ADMIN', JPath::clean( JPATH_ADMINISTRATOR . "/components/com_quickcontent" ) );
+define('QUICKCONTENT_SELF' , JPath::clean( JPATH_BASE . "/components/com_quickcontent" ));
+
+
 include_once JPath::clean( JPATH_ADMINISTRATOR . "/components/com_quickcontent/helpers/quickcontent.php" ) ;
 include_once JPath::clean( JPATH_ADMINISTRATOR . "/components/com_quickcontent/includes/loader.php" ) ;
-
-
-// Set default option to path helper, then AKHelperPath will helpe us get admin path.
-AKHelper::_('path.setOption', 'com_quickcontent') ;
 
 
 // Set Component helper prefix, and AKProxy can use component helper first.
