@@ -16,11 +16,9 @@ You can choice `Blog` or `Category list` as menu view type, and setting params o
 
 [DEMO][7]Account: demo / demo
 
-## Donate Us [![Donate](http://f.cl.ly/items/201r3g370r0r461l3x2b/btn_donate_LG.gif)](http://goo.gl/RklRQV)
+## [![Donate](http://f.cl.ly/items/201r3g370r0r461l3x2b/btn_donate_LG.gif)](http://ext.asikart.com/donate-us.html)
 
-Encurage us making our extension more perfectly.
-
-### [$20](http://goo.gl/4FkQMG) / [$30](http://goo.gl/0NYmUT) / [$40](http://goo.gl/i11fiJ) / [$50](http://goo.gl/pOZwLe) / [Enter my amount](http://goo.gl/RklRQV)
+Help us making our extensions more perfectly.
 
 
 
