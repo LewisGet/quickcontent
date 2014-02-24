@@ -1,4 +1,4 @@
-# QuickContent (AQC)
+# QuickContent (AQC) [![Analytics](https://ga-beacon.appspot.com/UA-48372917-1/quickcontent/readme)](https://github.com/igrigorik/ga-beacon)
 
 Quick content generator for Joomla CMS
 
@@ -16,11 +16,11 @@ You can choice `Blog` or `Category list` as menu view type, and setting params o
 
 [DEMO][7]Account: demo / demo
 
-## Donate Us ![](https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif)
+## Donate Us ![![Donate](https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif)](http://goo.gl/RklRQV)
 
 Encurage us makeing our extension more perfectly.
 
-### [$20](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=asika32764%40gmail%2ecom&lc=GB&item_name=Asikart%20Studios&amount=20%2e00&currency_code=USD&no_note=0&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest) / [$30](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=asika32764%40gmail%2ecom&lc=GB&item_name=Asikart%20Studios&amount=30%2e00&currency_code=USD&no_note=0&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest) / [$40](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=asika32764%40gmail%2ecom&lc=GB&item_name=Asikart%20Studios&amount=40%2e00&currency_code=USD&no_note=0&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest) / [$50](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=asika32764%40gmail%2ecom&lc=GB&item_name=Asikart%20Studios&amount=50%2e00&currency_code=USD&no_note=0&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest) / [Enter my amount](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=asika32764%40gmail%2ecom&lc=GB&item_name=Asikart%20Studios&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest)
+### [$20](http://goo.gl/4FkQMG) / [$30](http://goo.gl/0NYmUT) / [$40](http://goo.gl/i11fiJ) / [$50](http://goo.gl/pOZwLe) / [Enter my amount](http://goo.gl/RklRQV)
 
 
 
