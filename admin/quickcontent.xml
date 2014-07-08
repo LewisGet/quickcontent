@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component"
-	version="3.2"
+	version="3.3"
 	method="upgrade">
 	<name>com_quickcontent</name>
-	<creationDate>2014-1-11</creationDate>
+	<creationDate>2013-1-8</creationDate>
 	<copyright>Copyright (C) 2014. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<author>Asika</author>
 	<authorEmail>asika32764@gmail.com</authorEmail>
 	<authorUrl>http://asikart.com</authorUrl>
-	<version>1.0.0</version>
-	<description>COM_QUICKCONTENT_XML_DESCRIPTION</description>
+	<version>2.0.0</version>
+	<description></description>
 
 	<scriptfile>install.php</scriptfile>
 
-	<!-- do not re install sql when generator working.
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.sql</file>
 		  </sql>
 	</install>
-	-->
 
 	<uninstall>
 		<sql>
@@ -30,36 +28,8 @@
 		</sql>
 	</uninstall>
 
-	<files folder="../site">
-		<folder>asset</folder>
-		<folder>controller</folder>
-		<folder>helper</folder>
-		<folder>images</folder>
-		<folder>model</folder>
-		<folder>view</folder>
-		<filename>component.php</filename>
-		<filename>quickcontent.php</filename>
-		<filename>index.html</filename>
-		<filename>router.php</filename>.
-		<filename>routing.json</filename>
-	</files>
-
 	<administration>
 		<menu>COM_QUICKCONTENT</menu>
-
-		<!-- Submenu
-			Note that all & must be escaped to &amp; for the file to be valid
-			XML and be parsed by the installer
-		<submenu>
-
-			<menu link="option=com_quickcontent&amp;view=lists"
-				view="lists">com_quickcontent_lists
-			</menu>
-			<menu link="option=com_categories&amp;extension=com_quickcontent"
-				view="categories">jcategories
-			</menu>
-		</submenu>
-		-->
 
 		<files folder="admin">
 			<folder>asset</folder>
@@ -69,6 +39,7 @@
 			<folder>helpers</folder>
 			<folder>images</folder>
 			<folder>language</folder>
+			<folder>layouts</folder>
 			<folder>model</folder>
 			<folder>sql</folder>
 			<folder>src</folder>
