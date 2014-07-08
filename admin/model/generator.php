@@ -708,13 +708,15 @@ class QuickcontentModelGenerator extends Windwalker\Model\Model
 
 		if (trim($alias) == '')
 		{
-			$alias = \Windwalker\Helper\LanguageHelper::translate($alias, null, 'en');
+			$alias = \Windwalker\Helper\LanguageHelper::translate($article->title, null, 'en');
+
 			$alias = trim($alias);
 			$alias = JFilterOutput::stringURLSafe($alias);
 
-			$replace = array('aquot' => '',
-							 'a39'   => '',
-							 '--'    => '-'
+			$replace = array(
+				'aquot' => '',
+				'a39'   => '',
+				'--'    => '-'
 			);
 
 			$alias   = strtr($alias, $replace);

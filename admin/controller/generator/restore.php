@@ -19,7 +19,7 @@ class QuickcontentControllerGeneratorRestore extends \Windwalker\Controller\Admi
 
 		$msg = JText::_('COM_QUICKCONTENT_RESTORE_SUCCESS');
 
-		$this->redirectToList($msg);
+		$this->redirect('index.php?option=com_quickcontent', $msg);
 	}
 
 	/**

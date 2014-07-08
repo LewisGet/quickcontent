@@ -11,45 +11,6 @@
 			required="true"
 			class="input-xxlarge required"
 			/>
-
-		<field name="alias"
-			type="text"
-			label="JFIELD_ALIAS_LABEL"
-			description="JFIELD_ALIAS_DESC"
-			/>
-
-		<field name="parent_id"
-			type="list_modal"
-			label="COM_QUICKCONTENT_PARENT_ITEM"
-			description="COM_QUICKCONTENT_PARENT_ITEM_DESC"
-			show_root="true"
-			class="input-xlarge"
-			access="true"
-			/>
-
-		<field name="catid"
-			type="categoryadd"
-			label="JCATEGORY"
-			description="JFIELD_CATEGORY_DESC"
-			extension="com_quickcontent"
-			quickadd="true"
-			>
-			<option value="0">COM_QUICKCONTENT_TITLE_UNCATEGORISED</option>
-		</field>
-
-		<field name="images"
-			type="finder"
-			label="COM_QUICKCONTENT_IMAGES"
-			description="COM_QUICKCONTENT_IMAGES_DESC"
-			preview="true"
-			/>
-
-		<field name="url"
-			type="uri"
-			label="COM_QUICKCONTENT_URL"
-			description="COM_QUICKCONTENT_URL_DESC"
-			class="input-xlarge"
-			/>
 	</fieldset>
 
 	<fieldset
@@ -70,7 +31,7 @@
 		</field>
 
 		<field name="id"
-			type="text"
+			type="hidden"
 			default="0"
 			label="JGLOBAL_FIELD_ID_LABEL"
 			readonly="true"
@@ -88,18 +49,6 @@
 			type="calendar"
 			label="COM_QUICKCONTENT_CREATED"
 			description="COM_QUICKCONTENT_CREATED_DESC"
-			/>
-
-		<field name="publish_up"
-			type="calendar"
-			label="COM_QUICKCONTENT_PUBLISH_UP"
-			description="COM_QUICKCONTENT_PUBLISH_UP_DESC"
-			/>
-
-		<field name="publish_down"
-			type="calendar"
-			label="COM_QUICKCONTENT_PUBLISHED_DOWN"
-			description="COM_QUICKCONTENT_PUBLISH_DOWN_DESC"
 			/>
 
 	</fieldset>
@@ -181,22 +130,6 @@
 			/>
 	</fieldset>
 
-	<fieldset name="created">
-		<field name="access"
-			type="accesslevel"
-			label="JFIELD_ACCESS_LABEL"
-			description="JFIELD_ACCESS_DESC"
-			/>
-
-		<field name="language"
-			type="language"
-			label="JGRID_HEADING_LANGUAGE"
-			description="JGRID_HEADING_LANGUAGE"
-			>
-			<option value="*">JALL</option>
-		</field>
-	</fieldset>
-
 	<!-- Need this field as child of root node for access setting. -->
 	<field name="asset_id"
 		type="hidden"
@@ -212,41 +145,6 @@
 			section="list"
 			validate="rules"
 			/>
-	</fieldset>
-
-	<!-- For Quick Ajax AddNew -->
-	<fieldset name="quickadd">
-		<field name="title"
-			type="text"
-			label="JGLOBAL_TITLE"
-			description="JFIELD_TITLE_DESC"
-			required="true"
-			size="50"
-			labelclass=""
-			class="input-xlarge"
-			/>
-
-		<field name="catid"
-			type="category"
-			label="JCATEGORY"
-			description="JFIELD_CATEGORY_DESC"
-			extension="com_quickcontent"
-			labelclass=""
-			>
-			<option value="0">COM_QUICKCONTENT_TITLE_UNCATEGORISED</option>
-		</field>
-
-		<!--<field name="parent_id"
-			type="list_list"
-			label="COM_QUICKCONTENT_PARENT_ITEM"
-			description="COM_QUICKCONTENT_PARENT_ITEM_DESC"
-			labelclass=""
-			class="input-xlarge inputbox"
-			access="true"
-		>
-			<option>JSELECT</option>
-			<option value="1">JLIB_HTML_ADD_TO_ROOT</option>
-		</field>-->
 	</fieldset>
 
 </form>

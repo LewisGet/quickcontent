@@ -19,7 +19,7 @@ class QuickcontentControllerGeneratorGenerate extends \Windwalker\Controller\Adm
 
 		$msg = JText::_('COM_QUICKCONTENT_GENERATE_SUCCESS') ;
 
-		$this->redirectToList($msg);
+		$this->redirect('index.php?option=com_quickcontent', $msg);
 	}
 
 	/**

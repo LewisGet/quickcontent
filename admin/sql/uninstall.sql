@@ -1,1 +1,1 @@
-DROP TABLE  `#__quickcontent_lists`;
+DROP TABLE  `#__quickcontent_lists`

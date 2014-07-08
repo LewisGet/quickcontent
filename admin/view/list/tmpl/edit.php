@@ -62,7 +62,7 @@ $tabs = array(
 				</fieldset>
 			</div>
 
-			<div class="span5">
+			<div class="span5 form-horizontal">
 				<!-- Tab Content -->
 
 				<?php echo JHtmlBootstrap::startTabSet('quickcontent', array( 'active' => 'basic' )  ); ?>

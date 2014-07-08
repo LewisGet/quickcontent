@@ -19,7 +19,7 @@ class QuickcontentControllerGeneratorDeleteall extends \Windwalker\Controller\Ad
 
 		$msg = JText::_('COM_QUICKCONTENT_CLEAR_WHOLE_SITE_SUCCESS');
 
-		$this->redirectToList($msg);
+		$this->redirect('index.php?option=com_quickcontent', $msg);
 	}
 
 	/**
