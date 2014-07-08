@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset name="information"
+		align="left"
+		horz="true">
+
+		<field name="title"
+			type="text"
+			label="JGLOBAL_TITLE"
+			description="JFIELD_TITLE_DESC"
+			required="true"
+			class="input-xxlarge required"
+			/>
+
+		<field name="alias"
+			type="text"
+			label="JFIELD_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
+			/>
+
+		<field name="parent_id"
+			type="list_modal"
+			label="COM_QUICKCONTENT_PARENT_ITEM"
+			description="COM_QUICKCONTENT_PARENT_ITEM_DESC"
+			show_root="true"
+			class="input-xlarge"
+			access="true"
+			/>
+
+		<field name="catid"
+			type="categoryadd"
+			label="JCATEGORY"
+			description="JFIELD_CATEGORY_DESC"
+			extension="com_quickcontent"
+			quickadd="true"
+			>
+			<option value="0">COM_QUICKCONTENT_TITLE_UNCATEGORISED</option>
+		</field>
+
+		<field name="images"
+			type="finder"
+			label="COM_QUICKCONTENT_IMAGES"
+			description="COM_QUICKCONTENT_IMAGES_DESC"
+			preview="true"
+			/>
+
+		<field name="url"
+			type="uri"
+			label="COM_QUICKCONTENT_URL"
+			description="COM_QUICKCONTENT_URL_DESC"
+			class="input-xlarge"
+			/>
+	</fieldset>
+
+	<fieldset
+		name="publish"
+		align="right"
+		horz="true">
+
+		<field name="state"
+			type="list"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			class="chzn-color-state"
+			size="1"
+			default="1"
+			>
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+		</field>
+
+		<field name="id"
+			type="text"
+			default="0"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			readonly="true"
+			class="readonly"
+			description="JGLOBAL_FIELD_ID_DESC"
+			/>
+
+		<field name="created_by"
+			type="user"
+			label="COM_QUICKCONTENT_CREATED_BY"
+			description="COM_QUICKCONTENT_CREATED_BY_DESC"
+			/>
+
+		<field name="created"
+			type="calendar"
+			label="COM_QUICKCONTENT_CREATED"
+			description="COM_QUICKCONTENT_CREATED_DESC"
+			/>
+
+		<field name="publish_up"
+			type="calendar"
+			label="COM_QUICKCONTENT_PUBLISH_UP"
+			description="COM_QUICKCONTENT_PUBLISH_UP_DESC"
+			/>
+
+		<field name="publish_down"
+			type="calendar"
+			label="COM_QUICKCONTENT_PUBLISHED_DOWN"
+			description="COM_QUICKCONTENT_PUBLISH_DOWN_DESC"
+			/>
+
+	</fieldset>
+
+	<fieldset name="text"
+		align="left">
+		<field name="content"
+			type="editor"
+			label="COM_QUICKCONTENT_FULLTEXT"
+			description="COM_QUICKCONTENT_FULLTEXT_DESC"
+			filter="raw"
+			buttons="true"
+			hide="readmore,pagebreak,article,image"
+			labelclass="control-label"
+			editor="tinymce"
+			/>
+
+		<field name="checked_out"
+			type="hidden"
+			filter="unset"/>
+
+		<field name="checked_out_time"
+			type="hidden"
+			filter="unset"/>
+
+	</fieldset>
+
+	<fieldset name="menuparams">
+		<field
+			name="menutype"
+			type="text"
+			label="COM_QUICKCONTENT_MENUTYPE"
+			default="mainmenu"
+			class="inputbox"
+			description="COM_QUICKCONTENT_MENUTYPE_DESC"
+			labelclass="control-label"
+			/>
+
+		<field
+			name="delete_existing"
+			type="radio"
+			label="COM_QUICKCONTENT_CLEARMENU"
+			default="1"
+			class="inputbox btn-group"
+			description="COM_QUICKCONTENT_CLEARMENU_DESC"
+			labelclass="control-label"
+			>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="category_menutype"
+			type="list"
+			label="COM_QUICKCONTENT_VIEWTYPE"
+			default="list"
+			class="inputbox"
+			description="COM_QUICKCONTENT_VIEWTYPE"
+			labelclass="control-label"
+			>
+			<option value="list">COM_QUICKCONTENT_VIEW_LIST</option>
+			<option value="blog">COM_QUICKCONTENT_VIEW_BLOG</option>
+			<option value="0">COM_QUICKCONTENT_VIEW_NONE</option>
+		</field>
+
+		<field
+			name="list"
+			tyle="hidden"
+			/>
+
+		<field
+			name="blog"
+			tyle="hidden"
+			/>
+
+		<field
+			name="article"
+			tyle="hidden"
+			/>
+	</fieldset>
+
+	<fieldset name="created">
+		<field name="access"
+			type="accesslevel"
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC"
+			/>
+
+		<field name="language"
+			type="language"
+			label="JGRID_HEADING_LANGUAGE"
+			description="JGRID_HEADING_LANGUAGE"
+			>
+			<option value="*">JALL</option>
+		</field>
+	</fieldset>
+
+	<!-- Need this field as child of root node for access setting. -->
+	<field name="asset_id"
+		type="hidden"
+		filter="unset"/>
+
+	<fieldset name="rules">
+		<field name="rules"
+			type="rules"
+			translate_label="false"
+			class="inputbox"
+			filter="rules"
+			component="com_quickcontent"
+			section="list"
+			validate="rules"
+			/>
+	</fieldset>
+
+	<!-- For Quick Ajax AddNew -->
+	<fieldset name="quickadd">
+		<field name="title"
+			type="text"
+			label="JGLOBAL_TITLE"
+			description="JFIELD_TITLE_DESC"
+			required="true"
+			size="50"
+			labelclass=""
+			class="input-xlarge"
+			/>
+
+		<field name="catid"
+			type="category"
+			label="JCATEGORY"
+			description="JFIELD_CATEGORY_DESC"
+			extension="com_quickcontent"
+			labelclass=""
+			>
+			<option value="0">COM_QUICKCONTENT_TITLE_UNCATEGORISED</option>
+		</field>
+
+		<!--<field name="parent_id"
+			type="list_list"
+			label="COM_QUICKCONTENT_PARENT_ITEM"
+			description="COM_QUICKCONTENT_PARENT_ITEM_DESC"
+			labelclass=""
+			class="input-xlarge inputbox"
+			access="true"
+		>
+			<option>JSELECT</option>
+			<option value="1">JLIB_HTML_ADD_TO_ROOT</option>
+		</field>-->
+	</fieldset>
+
+</form>
