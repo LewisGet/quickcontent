@@ -693,6 +693,13 @@ class QuickcontentModelGenerator extends Windwalker\Model\Model
 	 */
 	public function tranAlias(&$article)
 	{
+		$config = JFactory::getConfig();
+
+		if ($config->get('unicodeslugs'))
+		{
+			return;
+		}
+
 		$alias = $article->alias;
 		$title = $article->title;
 
